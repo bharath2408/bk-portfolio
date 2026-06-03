@@ -103,7 +103,7 @@ export function RobotCompanion() {
   const current = SECTIONS[section];
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 hidden md:flex flex-col items-end gap-2 select-none">
+    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2 select-none">
 
       {/* Speech bubble */}
       <AnimatePresence mode="wait">
@@ -113,7 +113,7 @@ export function RobotCompanion() {
           animate={{ opacity: 1, y: 0,  scale: 1    }}
           exit={{    opacity: 0, y: -8,  scale: 0.92  }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mr-4 w-[215px] rounded-2xl rounded-br-sm border border-white/10 bg-surface/80 px-4 py-3.5 shadow-2xl backdrop-blur-xl"
+          className="relative mr-2 hidden sm:block w-[200px] rounded-2xl rounded-br-sm border border-white/10 bg-surface/80 px-4 py-3.5 shadow-2xl backdrop-blur-xl"
           style={{ boxShadow: "0 0 0 1px rgba(124,92,255,0.15), 0 20px 40px -12px rgba(0,0,0,0.7)" }}
         >
           <div className="mb-2 flex items-center gap-1.5">
@@ -144,7 +144,7 @@ export function RobotCompanion() {
         </AnimatePresence>
 
         <div
-          className="h-56 w-36 cursor-pointer"
+          className="h-40 w-24 sm:h-56 sm:w-36 cursor-pointer"
           onClick={handlePoke}
           title="Click Tom to make him dance faster!"
         >
