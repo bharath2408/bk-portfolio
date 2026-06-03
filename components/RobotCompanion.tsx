@@ -8,34 +8,34 @@ const RobotScene = dynamic(() => import("./RobotScene"), { ssr: false });
 
 const SECTIONS: Record<string, { emoji: string; label: string; text: string }> = {
   top: {
-    emoji: "👋",
-    label: "Welcome",
-    text: "Hey! I'm BK's digital buddy. Scroll down to explore!",
+    emoji: "🐱",
+    label: "Hey!",
+    text: "Meow! I'm Tom — Bharatha's hype-cat. Scroll down, I'll show you what he's built!",
   },
   about: {
-    emoji: "🧠",
+    emoji: "😼",
     label: "About",
-    text: "2.5+ years crafting AI-powered apps end to end. Clean code, real impact.",
+    text: "2.5+ years of experience! That's almost as long as I've been chasing Jerry. Almost.",
   },
   skills: {
     emoji: "⚡",
     label: "Skills",
-    text: "50+ technologies — React, Next.js, TensorFlow.js, Docker... the stack never stops.",
+    text: "50+ technologies? Even I can't catch someone this fast. React, Three.js, AI... purr-fect.",
   },
   work: {
     emoji: "🚀",
     label: "Projects",
-    text: "4 enterprise platforms shipped. Real clients, real problems, real solutions.",
+    text: "4 enterprise platforms shipped. Bharatha moves faster than Jerry on roller skates!",
   },
   experience: {
     emoji: "💼",
     label: "Experience",
-    text: "Frontend Dev at D2R AI Labs since Aug 2023. Shipping fast, learning faster.",
+    text: "Frontend Dev since Aug 2023 at D2R AI Labs. Shipping daily — no Jerry can stop him!",
   },
   contact: {
     emoji: "🤝",
     label: "Contact",
-    text: "Like what you see? Bharatha is open for opportunities. Let's build!",
+    text: "Want to hire Bharatha? Send that email — I'll keep Jerry distracted, I promise. 😄",
   },
 };
 
@@ -49,7 +49,7 @@ export function RobotCompanion() {
   const [mouseY, setMouseY]   = useState(0);
   const [hint, setHint]       = useState(true);
 
-  // Global mouse tracking → robot head follows cursor
+  // Global mouse tracking
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       setMouseX((e.clientX / window.innerWidth)  * 2 - 1);
@@ -59,14 +59,14 @@ export function RobotCompanion() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Hide the "click me" hint after first poke
+  // Click → speed up Tom's dance
   const handlePoke = useCallback(() => {
     setPoke(true);
     setHint(false);
-    setTimeout(() => setPoke(false), 1600);
+    setTimeout(() => setPoke(false), 2200);
   }, []);
 
-  // Section detection via IntersectionObserver
+  // Section detection
   useEffect(() => {
     const visible = new Set<string>();
 
@@ -105,7 +105,7 @@ export function RobotCompanion() {
   return (
     <div className="fixed bottom-4 right-4 z-40 hidden md:flex flex-col items-end gap-2 select-none">
 
-      {/* ── Speech bubble ──────────────────── */}
+      {/* Speech bubble */}
       <AnimatePresence mode="wait">
         <motion.div
           key={section}
@@ -113,45 +113,40 @@ export function RobotCompanion() {
           animate={{ opacity: 1, y: 0,  scale: 1    }}
           exit={{    opacity: 0, y: -8,  scale: 0.92  }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mr-4 w-[210px] rounded-2xl rounded-br-sm border border-white/10 bg-surface/80 px-4 py-3.5 shadow-2xl backdrop-blur-xl"
+          className="relative mr-4 w-[215px] rounded-2xl rounded-br-sm border border-white/10 bg-surface/80 px-4 py-3.5 shadow-2xl backdrop-blur-xl"
           style={{ boxShadow: "0 0 0 1px rgba(124,92,255,0.15), 0 20px 40px -12px rgba(0,0,0,0.7)" }}
         >
-          {/* Section label chip */}
           <div className="mb-2 flex items-center gap-1.5">
             <span className="text-base leading-none">{current.emoji}</span>
             <span className="rounded-full bg-iris/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-iris">
               {current.label}
             </span>
           </div>
-
           <p className="text-[12px] leading-relaxed text-ink/80">{current.text}</p>
-
-          {/* Bubble tail */}
           <span className="absolute -bottom-[7px] right-5 h-3 w-3 rotate-45 rounded-[2px] border-b border-r border-white/10 bg-surface/80" />
         </motion.div>
       </AnimatePresence>
 
-      {/* ── Robot canvas + click hint ─────── */}
+      {/* Tom canvas */}
       <div className="relative">
-        {/* Click hint */}
         <AnimatePresence>
           {hint && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ delay: 2.5 }}
+              transition={{ delay: 3 }}
               className="absolute -top-5 left-0 right-0 text-center text-[10px] text-muted/50"
             >
-              click me!
+              click Tom! 🐱
             </motion.p>
           )}
         </AnimatePresence>
 
         <div
-          className="h-52 w-36 cursor-pointer"
+          className="h-56 w-36 cursor-pointer"
           onClick={handlePoke}
-          title="Click the robot!"
+          title="Click Tom to make him dance faster!"
         >
           <RobotScene wave={wave} poke={poke} mouseX={mouseX} mouseY={mouseY} />
         </div>
