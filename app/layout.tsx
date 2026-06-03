@@ -12,14 +12,95 @@ const display = Bricolage_Grotesque({
   display: "swap",
 });
 
+const title = `${profile.name} — ${profile.role}`;
+const description = profile.blurb;
+
 export const metadata: Metadata = {
-  title: `${profile.name} — ${profile.role}`,
-  description: profile.blurb,
-  openGraph: {
-    title: `${profile.name} — ${profile.role}`,
-    description: profile.blurb,
-    type: "website",
+  metadataBase: new URL(profile.siteUrl),
+  title: {
+    default: title,
+    template: `%s | ${profile.name}`,
   },
+  description,
+  keywords: [
+    "Frontend Developer",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript",
+    "UI Engineer",
+    "AI web applications",
+    "Chennai developer",
+    "Bharatha Kumar",
+    "portfolio",
+    "Three.js",
+    "TensorFlow.js",
+  ],
+  authors: [{ name: profile.name, url: profile.siteUrl }],
+  creator: profile.name,
+  openGraph: {
+    type: "website",
+    url: profile.siteUrl,
+    siteName: `${profile.name} — Portfolio`,
+    title,
+    description,
+    locale: "en_IN",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: profile.siteUrl,
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: profile.role,
+  description,
+  url: profile.siteUrl,
+  email: profile.email,
+  telephone: profile.phone,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Chennai",
+    addressRegion: "Tamil Nadu",
+    addressCountry: "IN",
+  },
+  sameAs: [profile.linkedin],
+  knowsAbout: [
+    "React.js",
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Three.js",
+    "OpenAI API",
+    "TensorFlow.js",
+    "Docker",
+    "AWS",
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +109,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${display.variable} ${GeistSans.variable} ${GeistMono.variable}`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

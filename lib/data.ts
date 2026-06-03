@@ -13,6 +13,7 @@ export const profile = {
   email: "bharatha24kumar@gmail.com",
   phone: "+91 93427 26196",
   linkedin: "https://linkedin.com/in/bharathakumar",
+  siteUrl: "https://bk-portfolio-bharath2408.vercel.app",
   tagline: "building AI-powered web experiences",
   blurb:
     "2.5+ years crafting responsive, production-grade CRM, e-commerce and AI platforms with Next.js, React and TypeScript — with a sharp eye for detail.",
