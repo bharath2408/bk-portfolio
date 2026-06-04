@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import MemoryMatch from "@/components/MemoryMatch";
-import SnakeGame   from "@/components/SnakeGame";
+import MemoryMatch  from "@/components/MemoryMatch";
+import SnakeGame    from "@/components/SnakeGame";
+import BugWhacker  from "@/components/BugWhacker";
 
 const GAMES = [
-  { id: "memory", label: "Memory Match", emoji: "🃏", desc: "Flip cards · Find tech pairs" },
+  { id: "memory", label: "Memory Match", emoji: "🃏", desc: "Flip cards · Find pairs"   },
   { id: "snake",  label: "Code Runner",  emoji: "🐍", desc: "Eat the stack · Don't crash" },
+  { id: "bugs",   label: "Bug Whacker",  emoji: "🐛", desc: "Squash bugs · 30 seconds"  },
 ] as const;
 
 type GameId = (typeof GAMES)[number]["id"];
@@ -50,6 +52,7 @@ export default function GamesPage() {
       {/* Active game */}
       {active === "memory" && <MemoryMatch />}
       {active === "snake"  && <SnakeGame />}
+      {active === "bugs"   && <BugWhacker />}
     </main>
   );
 }
