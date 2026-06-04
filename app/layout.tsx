@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { profile } from "@/lib/data";
 import Providers from "@/components/Providers";
+import EasterEgg from "@/components/EasterEgg";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -117,8 +118,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="font-sans antialiased">
-          <Providers>{children}</Providers>
-        </body>
+        <Providers>{children}</Providers>
+        <EasterEgg />
+      </body>
     </html>
   );
 }
