@@ -8,6 +8,7 @@ import EasterEgg      from "@/components/EasterEgg";
 import MysteryBox     from "@/components/MysteryBox";
 import ChatWidget     from "@/components/ChatWidget";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import CursorTrail     from "@/components/CursorTrail";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -129,6 +130,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           themes={["dark", "light"]}
         >
           <Providers>{children}</Providers>
+          <CursorTrail />
           <EasterEgg />
           <MysteryBox />
           <ChatWidget />
