@@ -1,6 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+
+// Dynamically import the Three.js canvas — no SSR
+const BK3D = dynamic(() => import("./BK3D"), { ssr: false });
 
 export default function LoadingScreen() {
   return (
@@ -20,31 +24,31 @@ export default function LoadingScreen() {
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
       >
         <div
-          className="w-[420px] h-[420px] rounded-full"
+          className="w-[480px] h-[480px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(124,92,255,0.18) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(124,92,255,0.16) 0%, transparent 70%)",
           }}
         />
       </motion.div>
 
-      {/* BK monogram */}
+      {/* 3D BK text */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 font-display font-extrabold text-iris leading-none select-none"
-        style={{ fontSize: "clamp(5.5rem, 16vw, 9.5rem)", letterSpacing: "-0.04em" }}
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10"
+        style={{ width: "clamp(220px, 40vw, 380px)", height: "clamp(140px, 22vw, 220px)" }}
       >
-        BK
+        <BK3D />
       </motion.div>
 
       {/* Name */}
       <motion.p
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-        className="relative z-10 mt-5 text-[11px] tracking-[0.38em] uppercase text-muted font-sans"
+        transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
+        className="relative z-10 mt-2 text-[11px] tracking-[0.38em] uppercase text-muted font-sans"
       >
         Bharatha Kumar
       </motion.p>
@@ -53,7 +57,7 @@ export default function LoadingScreen() {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.38 }}
-        transition={{ duration: 0.4, delay: 0.48 }}
+        transition={{ duration: 0.4, delay: 0.5 }}
         className="relative z-10 mt-2 text-[10px] tracking-[0.22em] uppercase text-muted font-sans"
       >
         Frontend Developer
