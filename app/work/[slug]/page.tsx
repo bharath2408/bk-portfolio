@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects, experience, profile } from "@/lib/data";
+import { ReadingProgress } from "@/components/ReadingProgress";
 
 /* ── Static params — one page pre-built per project ── */
 export function generateStaticParams() {
@@ -59,6 +60,7 @@ export default function CaseStudyPage({
 
   return (
     <main className="relative min-h-screen">
+      <ReadingProgress />
 
       {/* ── Back link ── */}
       <div className="mx-auto max-w-shell px-6 pt-6 md:px-10">
