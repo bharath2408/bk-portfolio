@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import ColorPalette  from "@/components/tools/ColorPalette";
-import BoxShadow     from "@/components/tools/BoxShadow";
-import UnitConverter from "@/components/tools/UnitConverter";
+import ColorPalette       from "@/components/tools/ColorPalette";
+import BoxShadow          from "@/components/tools/BoxShadow";
+import UnitConverter      from "@/components/tools/UnitConverter";
+import GradientGenerator  from "@/components/tools/GradientGenerator";
+import ContrastChecker    from "@/components/tools/ContrastChecker";
 
 /* ── Tool registry ───────────────────────────────────────── */
 const TOOLS = [
@@ -32,6 +34,22 @@ const TOOLS = [
     desc:    "Convert between px and rem instantly with a configurable root font size and a quick-reference table of common values.",
     accent:  "#34D399",
     tag:     "Utility",
+  },
+  {
+    id:      "gradient-generator",
+    label:   "Gradient Generator",
+    emoji:   "🌈",
+    desc:    "Build CSS gradients visually — drag color stops, set angle with a dial, pick linear/radial/conic, and export CSS instantly.",
+    accent:  "#7C5CFF",
+    tag:     "CSS",
+  },
+  {
+    id:      "contrast-checker",
+    label:   "Contrast Checker",
+    emoji:   "♿",
+    desc:    "Check WCAG AA/AAA contrast ratios with a live preview, color blindness simulation and auto-fix suggestions.",
+    accent:  "#22D3EE",
+    tag:     "Accessibility",
   },
 ] as const;
 
@@ -192,9 +210,11 @@ export default function ToolsPage() {
               </div>
             </div>
 
-            {selected === "color-palette"  && <ColorPalette />}
-            {selected === "box-shadow"     && <BoxShadow />}
-            {selected === "unit-converter" && <UnitConverter />}
+            {selected === "color-palette"      && <ColorPalette />}
+            {selected === "box-shadow"         && <BoxShadow />}
+            {selected === "unit-converter"     && <UnitConverter />}
+            {selected === "gradient-generator" && <GradientGenerator />}
+            {selected === "contrast-checker"   && <ContrastChecker />}
           </motion.div>
         )}
       </AnimatePresence>
