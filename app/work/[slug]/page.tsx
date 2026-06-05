@@ -61,7 +61,7 @@ export default function CaseStudyPage({
     <main className="relative min-h-screen">
 
       {/* ── Back link ── */}
-      <div className="mx-auto max-w-shell px-6 pt-20 md:px-10">
+      <div className="mx-auto max-w-shell px-6 pt-6 md:px-10">
         <Link
           href="/#work"
           className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
