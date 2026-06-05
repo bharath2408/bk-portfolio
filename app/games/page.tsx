@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import MemoryMatch from "@/components/MemoryMatch";
 import SnakeGame   from "@/components/SnakeGame";
 import BugWhacker  from "@/components/BugWhacker";
+import TetrisGame  from "@/components/TetrisGame";
 
 /* ── Game registry ───────────────────────────────────────── */
 const GAMES = [
@@ -41,6 +42,17 @@ const GAMES = [
     bestLabel:   "Best score",
     controls:    "Click / Tap",
     difficulty:  "Hard",
+  },
+  {
+    id:          "tetris",
+    label:       "Block Drop",
+    emoji:       "🟦",
+    desc:        "Classic Tetris — ghost piece, hold, 7-bag randomiser, progressive speed.",
+    accent:      "#22D3EE",
+    bestKey:     "tetris_best",
+    bestLabel:   "Best score",
+    controls:    "Arrow keys / D-pad",
+    difficulty:  "Expert",
   },
 ] as const;
 
@@ -223,6 +235,7 @@ export default function GamesPage() {
             {selected === "memory" && <MemoryMatch />}
             {selected === "snake"  && <SnakeGame />}
             {selected === "bugs"   && <BugWhacker />}
+            {selected === "tetris" && <TetrisGame />}
           </motion.div>
         )}
       </AnimatePresence>
