@@ -100,6 +100,14 @@ export default function CommandPalette() {
       onSelect: () => { close(); router.push("/games"); },
     },
     {
+      id:       "page-tools",
+      label:    "Dev Tools",
+      hint:     "/tools",
+      icon:     "🛠",
+      group:    "Pages",
+      onSelect: () => { close(); router.push("/tools"); },
+    },
+    {
       id:       "action-email",
       label:    copied ? "Copied!" : "Copy email",
       hint:     profile.email,

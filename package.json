@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node --env-file=.env.local scripts/seed-sanity.mjs"
+    "seed": "node --env-file=.env.local scripts/seed-sanity.mjs",
+    "cleanup": "node --env-file=.env.local scripts/cleanup-sanity.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.0",

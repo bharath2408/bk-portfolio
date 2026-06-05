@@ -71,6 +71,13 @@ export function Footer({ name = profile.name }: { name?: string }) {
         >
           🎮 Mini Game
         </Link>
+        <Link
+          href="/tools"
+          className="font-mono transition-colors hover:text-cyan"
+          title="Dev tools"
+        >
+          🛠 Dev Tools
+        </Link>
       </div>
     </footer>
   );
