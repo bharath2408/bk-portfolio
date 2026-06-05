@@ -80,6 +80,16 @@ export function Navbar({
 
             <ThemeToggle />
 
+            <button
+              onClick={() =>
+                window.dispatchEvent(new Event("bk:palette"))
+              }
+              aria-label="Open command palette"
+              className="hidden items-center gap-1 rounded-lg border border-line bg-surface-2 px-2.5 py-1.5 font-mono text-[11px] text-faint transition-colors hover:border-line-strong hover:text-muted lg:flex"
+            >
+              ⌘K
+            </button>
+
             <a
               href={`mailto:${email}`}
               className="glow-btn rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-bg"

@@ -8,17 +8,26 @@ import {
   certifications,
 } from "@/lib/data";
 
-/* ── System prompt (server-only, never reaches the client) ── */
+const projectLinks = projects
+  .map((p) => `[${p.title}](/work/${p.slug})`)
+  .join(", ");
+
 const SYSTEM_PROMPT = `
 You are an AI assistant embedded in ${profile.name}'s personal portfolio website.
-Your ONLY job is to answer questions about ${profile.name} — his skills, projects,
-work experience, education, and background. Be friendly, concise, and enthusiastic.
+Your job is to help visitors learn about ${profile.name} and his work. Be friendly, concise, and enthusiastic.
 
-If someone asks something unrelated (politics, other people, general coding tutorials,
-etc.) politely decline and redirect them to ask about ${profile.name}.
+If someone asks something completely unrelated to tech or ${profile.name} (politics, celebrities, etc.)
+politely decline and redirect them to ask about ${profile.name}.
 
-Keep answers to 2-5 sentences unless the user asks for more detail.
-Always use first-person-about-him framing ("Bharatha has…", "He built…").
+ANSWERING TECH / "WHAT IS X" QUESTIONS:
+When someone asks "what is X" or "explain X" for a technology ${profile.name} uses:
+1. Give a clear, 1-2 sentence definition of X first.
+2. Then add ONE sentence about how ${profile.name} has specifically used or applied it.
+Do NOT make the entire answer about ${profile.name} — answer the question first, connect to him second.
+
+For all other questions, keep answers to 2-5 sentences unless the user asks for more detail.
+Use **bold** for key terms and \`backticks\` for technology names.
+When mentioning a project by name, use a markdown link from this list: ${projectLinks}.
 
 ═══ PROFILE ═══
 Name:     ${profile.name}
@@ -36,7 +45,7 @@ ${skillGroups.map((g) => `${g.title}: ${g.items.join(", ")}`).join("\n")}
 ${projects
   .map(
     (p) =>
-      `• ${p.title} (${p.kind})\n  ${p.desc}\n  Stack: ${p.tags.join(", ")}`
+      `• ${p.title} (${p.kind}) — slug: ${p.slug}\n  ${p.desc}\n  Stack: ${p.tags.join(", ")}`
   )
   .join("\n\n")}
 
@@ -51,6 +60,12 @@ ${education.degree} — ${education.school} (${education.year}, CGPA ${education
 
 ═══ CERTIFICATIONS ═══
 ${certifications.map((c) => `• ${c.title} — ${c.sub}`).join("\n")}
+
+═══ FOLLOW-UP CHIPS INSTRUCTION ═══
+After EVERY response, on its own final line, append exactly:
+CHIPS: <question 1> | <question 2> | <question 3>
+These must be 3 short (≤8 words) natural follow-up questions a visitor might ask next.
+The CHIPS line must be the very last line. No text after it.
 `.trim();
 
 const FALLBACK =
@@ -58,7 +73,6 @@ const FALLBACK =
   `email him at ${profile.email} or scroll to the Contact section below.`;
 
 export async function POST(req: Request): Promise<Response> {
-  /* ── Graceful fallback when key is absent ─────────────────── */
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return Response.json({ content: FALLBACK });
@@ -76,7 +90,7 @@ export async function POST(req: Request): Promise<Response> {
   try {
     const stream = await client.chat.completions.create({
       model:      "llama-3.3-70b-versatile",
-      max_tokens: 512,
+      max_tokens: 640,
       stream:     true,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
@@ -84,7 +98,6 @@ export async function POST(req: Request): Promise<Response> {
       ],
     });
 
-    /* ── Stream plain-text chunks back to the browser ────────── */
     const encoder = new TextEncoder();
     const body = new ReadableStream({
       async start(controller) {

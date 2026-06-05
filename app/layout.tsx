@@ -6,6 +6,7 @@ import { profile } from "@/lib/data";
 import Providers      from "@/components/Providers";
 import EasterEgg      from "@/components/EasterEgg";
 import MysteryBox     from "@/components/MysteryBox";
+import CommandPalette from "@/components/CommandPalette";
 import ChatWidget     from "@/components/ChatWidget";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CursorTrail       from "@/components/CursorTrail";
@@ -133,6 +134,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Providers>{children}</Providers>
           <ReadingProgress />
           <CursorTrail />
+          <CommandPalette />
           <EasterEgg />
           <MysteryBox />
           <ChatWidget />
