@@ -8,7 +8,8 @@
     "prebuild": "node scripts/clean.cjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "node --env-file=.env.local scripts/seed-sanity.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.0",
