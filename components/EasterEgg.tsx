@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { makeParticles, type Particle } from "@/lib/confetti";
 
 const KONAMI = [
   "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
@@ -9,43 +10,10 @@ const KONAMI = [
   "b","a",
 ];
 
-const COLORS = [
-  "#7C5CFF","#22D3EE","#34D399",
-  "#A78BFA","#67E8F9","#6EE7B7","#FFFFFF",
-];
-
 const KEYS_DISPLAY = ["↑","↑","↓","↓","←","→","←","→","B","A"];
 
-interface Particle {
-  id:       number;
-  x:        number;  // vw offset from center
-  y:        number;  // vh offset from center
-  color:    string;
-  size:     number;
-  rotate:   number;
-  delay:    number;
-  duration: number;
-}
-
-function makeParticles(n = 80): Particle[] {
-  return Array.from({ length: n }, (_, i) => {
-    const angle   = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
-    const dist    = 25 + Math.random() * 42;
-    return {
-      id:       i,
-      x:        Math.cos(angle) * dist,
-      y:        Math.sin(angle) * dist - 10,
-      color:    COLORS[Math.floor(Math.random() * COLORS.length)],
-      size:     6 + Math.random() * 14,
-      rotate:   (Math.random() - 0.5) * 600,
-      delay:    Math.random() * 0.18,
-      duration: 0.75 + Math.random() * 0.55,
-    };
-  });
-}
-
-// Generate once — stable across renders
-const PARTICLES = makeParticles();
+// Generated once — stable across renders
+const PARTICLES: Particle[] = makeParticles();
 
 export default function EasterEgg() {
   const [active, setActive] = useState(false);
