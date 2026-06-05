@@ -15,6 +15,7 @@ export interface SkillGroup {
 }
 export interface Project {
   title: string;
+  slug:  string;   // URL-safe identifier for /work/[slug] routing
   kind: string;
   accent: Accent;
   desc: string;

@@ -213,6 +213,29 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   VIEW TRANSITIONS API
+   Subtle root fade for all navigations; named elements morph
+   automatically because the browser handles position/size.
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes vt-fade-in  { from { opacity: 0; } }
+@keyframes vt-fade-out { to   { opacity: 0; } }
+
+::view-transition-old(root) {
+  animation: 0.22s ease both vt-fade-out;
+}
+::view-transition-new(root) {
+  animation: 0.22s ease both vt-fade-in;
+}
+
+/* Named shared elements (project cards ↔ case-study heroes) get the
+   browser's default cross-fade + position morph — no custom keyframes
+   needed, but we tune the duration to stay snappy. */
+::view-transition-image-pair(root) {
+  isolation: isolate;
+}
+
+/* ═══════════════════════════════════════════════════════════
    REDUCED MOTION
    ═══════════════════════════════════════════════════════════ */
 
@@ -222,6 +245,13 @@ body {
     animation-iteration-count:1       !important;
     transition-duration:      0.001ms !important;
     scroll-behavior:          auto    !important;
+  }
+
+  /* Kill ALL view transitions when reduced motion is preferred */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 

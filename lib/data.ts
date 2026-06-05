@@ -83,6 +83,7 @@ export const skillGroups: SkillGroup[] = [
 export const projects: Project[] = [
   {
     title: "Customer Hub — Turtle",
+    slug:  "customer-hub",
     kind: "CRM Platform",
     accent: "iris",
     desc: "Enterprise CRM for customer data, sales tracking and analytics. Real-time Quickbase data visualised with interactive FusionCharts, plus dual SSO + Azure AD B2C auth and full role-based access control.",
@@ -90,6 +91,7 @@ export const projects: Project[] = [
   },
   {
     title: "Commerce Hub — Turtle",
+    slug:  "commerce-hub",
     kind: "Order & Supplier Management",
     accent: "cyan",
     desc: "Internal Amazon order & supplier platform. Integrated Amazon SP-API for automated order ingestion, with product tracking, supplier onboarding, user management and payment reconciliation modules.",
@@ -97,6 +99,7 @@ export const projects: Project[] = [
   },
   {
     title: "POA — Revalgo",
+    slug:  "poa-revalgo",
     kind: "AI Purchase Order Automation",
     accent: "mint",
     desc: "AI-powered PO automation that reads vendor emails and bill copies via the OpenAI API to auto-extract product, pricing and order data — with a vendor self-service order form delivered by an email-trigger workflow.",
@@ -104,6 +107,7 @@ export const projects: Project[] = [
   },
   {
     title: "Dream Hire",
+    slug:  "dream-hire",
     kind: "AI-Powered Hiring Suite",
     accent: "iris",
     desc: "Internal hiring suite with AI test proctoring. TensorFlow.js runs real-time eye, person and voice tracking in-browser via the MediaStream API, with accessible candidate and admin interfaces.",
