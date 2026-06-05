@@ -2,17 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { navLinks, profile } from "@/lib/data";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar({
-  name = profile.name,
+  name  = profile.name,
   email = profile.email,
 }: {
-  name?: string;
+  name?:  string;
   email?: string;
 }) {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string>("");
+  const [open,     setOpen]     = useState(false);
+  const [active,   setActive]   = useState<string>("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -21,9 +22,9 @@ export function Navbar({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // scrollspy: highlight the section currently in view
+  // Scrollspy: highlight section currently in view
   useEffect(() => {
-    const ids = navLinks.map((l) => l.href.replace("#", ""));
+    const ids      = navLinks.map((l) => l.href.replace("#", ""));
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
@@ -49,12 +50,14 @@ export function Navbar({
         }`}
       >
         <nav className="mx-auto flex max-w-shell items-center justify-between px-6 py-4 md:px-10">
+          {/* Logo */}
           <a href="#top" className="flex items-center gap-2.5">
             <span className="h-3 w-3 rounded-full grad-bg" />
             <span className="font-display text-base font-bold text-ink">{name}</span>
           </a>
 
-          <div className="hidden items-center gap-8 md:flex">
+          {/* Desktop nav */}
+          <div className="hidden items-center gap-7 md:flex">
             {navLinks.map((l) => {
               const on = active === l.href;
               return (
@@ -74,6 +77,9 @@ export function Navbar({
                 </a>
               );
             })}
+
+            <ThemeToggle />
+
             <a
               href={`mailto:${email}`}
               className="glow-btn rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-bg"
@@ -82,15 +88,20 @@ export function Navbar({
             </a>
           </div>
 
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink md:hidden"
-            aria-label="Toggle menu"
-          >
-            <span className="text-lg leading-none">{open ? "×" : "≡"}</span>
-          </button>
+          {/* Mobile: theme toggle + hamburger */}
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink"
+              aria-label="Toggle menu"
+            >
+              <span className="text-lg leading-none">{open ? "×" : "≡"}</span>
+            </button>
+          </div>
         </nav>
 
+        {/* Mobile drawer */}
         {open && (
           <div className="border-t border-line bg-bg/90 px-6 py-4 backdrop-blur-xl md:hidden">
             <div className="flex flex-col gap-1">
@@ -104,6 +115,13 @@ export function Navbar({
                   {l.label}
                 </a>
               ))}
+              <a
+                href={`mailto:${email}`}
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-xl grad-bg px-4 py-2.5 text-center text-sm font-semibold text-bg"
+              >
+                Resume
+              </a>
             </div>
           </div>
         )}

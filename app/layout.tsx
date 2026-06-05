@@ -3,10 +3,11 @@ import { Bricolage_Grotesque } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { profile } from "@/lib/data";
-import Providers    from "@/components/Providers";
-import EasterEgg    from "@/components/EasterEgg";
-import MysteryBox   from "@/components/MysteryBox";
-import ChatWidget   from "@/components/ChatWidget";
+import Providers      from "@/components/Providers";
+import EasterEgg      from "@/components/EasterEgg";
+import MysteryBox     from "@/components/MysteryBox";
+import ChatWidget     from "@/components/ChatWidget";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -111,6 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${display.variable} ${GeistSans.variable} ${GeistMono.variable}`}
     >
       <head>
@@ -120,10 +122,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="font-sans antialiased">
-        <Providers>{children}</Providers>
-        <EasterEgg />
-        <MysteryBox />
-        <ChatWidget />
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="dark"
+          enableSystem
+          themes={["dark", "light"]}
+        >
+          <Providers>{children}</Providers>
+          <EasterEgg />
+          <MysteryBox />
+          <ChatWidget />
+        </ThemeProvider>
       </body>
     </html>
   );

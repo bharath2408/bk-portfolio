@@ -2,10 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS custom properties
+   Components reference these via Tailwind's rgb(var()) shim.
+   Dark theme is the default (:root); light overrides follow.
+   ═══════════════════════════════════════════════════════════ */
+
 :root {
+  /* ── Fonts ── */
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+
+  /* ── Gradient (iris → cyan) ── */
   --grad: linear-gradient(120deg, #7c5cff 0%, #22d3ee 100%);
+
+  /* ── Dark palette — RGB triplets for Tailwind alpha modifiers ── */
+  --c-bg:        7   7   11;   /* #07070B */
+  --c-bg-soft:   14  14  21;   /* #0E0E15 */
+  --c-surface:   19  19  28;   /* #13131C */
+  --c-surface-2: 26  26  38;   /* #1A1A26 */
+  --c-ink:       236 236 242;  /* #ECECF2 */
+  --c-muted:     155 155 174;  /* #9B9BAE */
+  --c-faint:     106 106 124;  /* #6A6A7C */
+  --c-iris:      124 92  255;  /* #7C5CFF */
+  --c-cyan:      34  211 238;  /* #22D3EE */
+  --c-mint:      52  211 153;  /* #34D399 */
+
+  /* ── Line colours (full rgba — no alpha modifier needed) ── */
+  --c-line:        rgba(255, 255, 255, 0.08);
+  --c-line-strong: rgba(255, 255, 255, 0.14);
+
+  /* ── Card chrome (adapts per theme) ── */
+  --card-face:         linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0));
+  --card-border:       rgba(255, 255, 255, 0.08);
+  --card-border-hover: rgba(255, 255, 255, 0.16);
+  --card-hover-shadow: rgba(0, 0, 0, 0.8);
+
+  /* ── Spotlight hover border ── */
+  --spotlight-hover-border: rgba(255, 255, 255, 0.18);
+
+  /* ── Scrollbar ── */
+  --scrollbar-track: #07070b;
+  --scrollbar-thumb: #2a2a3a;
+
+  /* ── Dot-grid ── */
+  --dot-color: rgba(255, 255, 255, 0.05);
+
+  /* ── Proj index ghost text ── */
+  --proj-index-color: rgba(255, 255, 255, 0.06);
 }
+
+/* ── Light theme overrides ──────────────────────────────────
+   Palette is cool-white (slight lavender tint mirrors the dark
+   theme's atmosphere). Cyan and mint are darkened for readable
+   contrast on white backgrounds; iris stays the same hue.
+   ─────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --grad: linear-gradient(120deg, #5b30f0 0%, #0580a0 100%);
+
+  --c-bg:        249 249 255;  /* #F9F9FF — cool white */
+  --c-bg-soft:   241 241 251;  /* #F1F1FB */
+  --c-surface:   255 255 255;  /* #FFFFFF */
+  --c-surface-2: 244 244 253;  /* #F4F4FD */
+  --c-ink:       13  13  23;   /* #0D0D17 — near-black w/ purple hint */
+  --c-muted:     94  94  116;  /* #5E5E74 */
+  --c-faint:     152 152 172;  /* #9898AC */
+  --c-iris:      124 92  255;  /* same — decorative */
+  --c-cyan:      5   128 160;  /* #0580A0 — darkened for contrast */
+  --c-mint:      10  128 96;   /* #0A8060 — darkened for contrast */
+
+  --c-line:        rgba(0, 0, 0, 0.08);
+  --c-line-strong: rgba(0, 0, 0, 0.14);
+
+  --card-face:         linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0));
+  --card-border:       rgba(0, 0, 0, 0.08);
+  --card-border-hover: rgba(0, 0, 0, 0.16);
+  --card-hover-shadow: rgba(100, 100, 120, 0.15);
+
+  --spotlight-hover-border: rgba(0, 0, 0, 0.14);
+
+  --scrollbar-track: #f1f1fb;
+  --scrollbar-thumb: #c8c8dc;
+
+  --dot-color: rgba(0, 0, 0, 0.045);
+  --proj-index-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -18,39 +102,52 @@ html {
 }
 
 body {
-  background-color: #07070b;
-  color: #ececf2;
+  background-color: rgb(var(--c-bg));
+  color: rgb(var(--c-ink));
   font-feature-settings: "ss01", "cv01";
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Atmospheric layered background */
+/* ═══════════════════════════════════════════════════════════
+   ATMOSPHERE
+   ═══════════════════════════════════════════════════════════ */
+
 .bg-atmosphere {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
 }
+
 .bg-atmosphere::before {
-  /* faint dot grid */
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
   background-size: 32px 32px;
   mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 30%, transparent 75%);
 }
+
 .bg-atmosphere::after {
-  /* ambient color glows */
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(600px circle at 80% 0%, rgba(124, 92, 255, 0.16), transparent 55%),
-    radial-gradient(700px circle at 5% 25%, rgba(34, 211, 238, 0.1), transparent 50%);
+    radial-gradient(600px circle at 80%  0%,  rgba(124, 92, 255, 0.16), transparent 55%),
+    radial-gradient(700px circle at  5% 25%,  rgba(34,  211, 238, 0.10), transparent 50%);
 }
 
-/* film grain overlay */
+[data-theme="light"] .bg-atmosphere::after {
+  background:
+    radial-gradient(600px circle at 80%  0%,  rgba(124, 92, 255, 0.07), transparent 55%),
+    radial-gradient(700px circle at  5% 25%,  rgba(  5, 128, 160, 0.06), transparent 50%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRAIN OVERLAY
+   ═══════════════════════════════════════════════════════════ */
+
 .grain {
   position: fixed;
   inset: 0;
@@ -60,60 +157,78 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* gradient text */
+[data-theme="light"] .grain {
+  opacity: 0.02;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRADIENT UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+
 .grad-text {
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  background-size: 200% auto;
+  animation: shimmer 6s linear infinite;
 }
 
 .grad-bg {
   background: var(--grad);
 }
 
-/* hairline borders */
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD
+   ═══════════════════════════════════════════════════════════ */
+
 .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card-face);
+  border: 1px solid var(--card-border);
   border-radius: 18px;
 }
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: var(--card-border-hover);
 }
 
-/* custom thin scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #07070b;
-}
-::-webkit-scrollbar-thumb {
-  background: #2a2a3a;
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar          { width: 10px; }
+::-webkit-scrollbar-track    { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb    {
+  background: var(--scrollbar-thumb);
   border-radius: 10px;
-  border: 2px solid #07070b;
+  border: 2px solid var(--scrollbar-track);
 }
 
 ::selection {
-  background: rgba(124, 92, 255, 0.35);
-  color: #fff;
+  background: rgba(124, 92, 255, 0.3);
+  color: rgb(var(--c-ink));
 }
 
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
+  *, *::before, *::after {
+    animation-duration:       0.001ms !important;
+    animation-iteration-count:1       !important;
+    transition-duration:      0.001ms !important;
+    scroll-behavior:          auto    !important;
   }
 }
 
-/* ---------- UI polish ---------- */
+/* ═══════════════════════════════════════════════════════════
+   SPOTLIGHT HOVER
+   ═══════════════════════════════════════════════════════════ */
 
-/* mouse-tracking spotlight on cards */
 .spotlight {
   position: relative;
   isolation: isolate;
@@ -133,40 +248,41 @@ body {
   opacity: 0;
   transition: opacity 0.35s;
 }
-.spotlight:hover::before {
-  opacity: 1;
-}
+.spotlight:hover::before  { opacity: 1; }
 .spotlight:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.8);
+  border-color: var(--spotlight-hover-border);
+  box-shadow: 0 20px 50px -24px var(--card-hover-shadow);
 }
 .spotlight > * {
   position: relative;
   z-index: 1;
 }
 
-/* animated gradient text */
-.grad-text {
-  background-size: 200% auto;
-  animation: shimmer 6s linear infinite;
-}
-@keyframes shimmer {
-  to {
-    background-position: 200% center;
-  }
+[data-theme="light"] .spotlight::before {
+  background: radial-gradient(
+    400px circle at var(--mx, 50%) var(--my, -20%),
+    var(--glow, rgba(124, 92, 255, 0.09)),
+    transparent 60%
+  );
 }
 
-/* glowing primary buttons */
+/* ═══════════════════════════════════════════════════════════
+   GLOW BUTTON
+   ═══════════════════════════════════════════════════════════ */
+
 .glow-btn {
   position: relative;
   transition: transform 0.2s, box-shadow 0.3s;
 }
 .glow-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 38px -8px rgba(124, 92, 255, 0.55);
+  box-shadow: 0 12px 38px -8px rgba(124, 92, 255, 0.5);
 }
 
-/* aurora blob behind hero */
+/* ═══════════════════════════════════════════════════════════
+   AURORA BLOB
+   ═══════════════════════════════════════════════════════════ */
+
 .aurora {
   position: absolute;
   border-radius: 9999px;
@@ -175,24 +291,26 @@ body {
   background: conic-gradient(
     from 0deg,
     rgba(124, 92, 255, 0.55),
-    rgba(34, 211, 238, 0.45),
-    rgba(52, 211, 153, 0.35),
-    rgba(124, 92, 255, 0.55)
+    rgba(34,  211, 238, 0.45),
+    rgba(52,  211, 153, 0.35),
+    rgba(124, 92,  255, 0.55)
   );
   animation: spin 18s linear infinite;
   pointer-events: none;
 }
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-/* hero scroll cue */
+[data-theme="light"] .aurora { opacity: 0.22; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL CUE
+   ═══════════════════════════════════════════════════════════ */
+
 .scroll-cue {
   width: 24px;
   height: 40px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid var(--c-line);
   border-radius: 14px;
   display: flex;
   justify-content: center;
@@ -202,21 +320,24 @@ body {
   width: 3px;
   height: 8px;
   border-radius: 3px;
-  background: var(--muted, #9b9bae);
+  background: rgb(var(--c-muted));
   animation: cue 1.8s ease-in-out infinite;
 }
 @keyframes cue {
-  0% { transform: translateY(0); opacity: 1; }
-  70% { transform: translateY(12px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 0; }
+  0%   { transform: translateY(0);   opacity: 1; }
+  70%  { transform: translateY(12px); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 0; }
 }
 
-/* big faint project index */
+/* ═══════════════════════════════════════════════════════════
+   PROJECT INDEX GHOST NUMBER
+   ═══════════════════════════════════════════════════════════ */
+
 .proj-index {
-  font-family: var(--display);
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: 3.4rem;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: rgba(255, 255, 255, 0.06);
+  color: var(--proj-index-color);
 }
