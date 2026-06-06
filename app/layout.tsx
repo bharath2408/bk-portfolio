@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     images: [
       {
-        url: `${profile.siteUrl}/opengraph-image?v=2`,
+        url: `${profile.siteUrl}/api/og`,
         width: 1200,
         height: 630,
         alt: title,
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: [`${profile.siteUrl}/opengraph-image?v=2`],
+    images: [`${profile.siteUrl}/api/og`],
   },
   robots: {
     index: true,

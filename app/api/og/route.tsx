@@ -1,11 +1,7 @@
 import { ImageResponse } from "next/og";
 
-export const runtime     = "edge";
-export const alt         = "Bharatha Kumar — Frontend Developer";
-export const size        = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export const runtime = "edge";
 
-// Inline values — avoids any edge-runtime import chain issues
 const NAME     = "Bharatha Kumar";
 const ROLE     = "Frontend Developer";
 const LOCATION = "Chennai, Tamil Nadu";
@@ -13,7 +9,7 @@ const BLURB    = "2.5+ years crafting responsive, production-grade CRM, e-commer
 const SITE     = "bk-portfolio-bharath2408.vercel.app";
 const TAGS     = ["Next.js", "React", "TypeScript", "Three.js", "AI / ML", "DevOps"];
 
-export default function OGImage() {
+export function GET() {
   return new ImageResponse(
     (
       <div
@@ -111,7 +107,7 @@ export default function OGImage() {
             {BLURB}
           </div>
 
-          {/* Tech tags — Satori doesn't support flexWrap so limit to one row */}
+          {/* Tech tags */}
           <div style={{ display: "flex", gap: 10 }}>
             {TAGS.map((tag) => (
               <div
@@ -162,6 +158,6 @@ export default function OGImage() {
         />
       </div>
     ),
-    { ...size },
+    { width: 1200, height: 630 },
   );
 }
