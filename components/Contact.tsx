@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { profile } from "@/lib/data";
 import { Reveal } from "./Reveal";
-import { VisitorCount } from "./VisitorCount";
 import { makeParticles, type Particle } from "@/lib/confetti";
 
 function ConfettiBurst({ origin }: { origin: { x: number; y: number } }) {
@@ -260,7 +259,6 @@ export function Footer({ name = profile.name }: { name?: string }) {
       <div className="mx-auto flex max-w-shell flex-col items-center justify-between gap-2 px-6 py-7 text-xs text-faint sm:flex-row md:px-10">
         <span>© {new Date().getFullYear()} {name}</span>
         <span className="font-mono">Built with Next.js · Tailwind · Sanity</span>
-        <VisitorCount />
         <Link href="/games"    className="font-mono transition-colors hover:text-iris"  title="Play the mini game">🎮 Mini Game</Link>
         <Link href="/tools"    className="font-mono transition-colors hover:text-cyan"  title="Dev tools">🛠 Dev Tools</Link>
         <Link href="/guestbook" className="font-mono transition-colors hover:text-mint" title="Guestbook">✍️ Guestbook</Link>

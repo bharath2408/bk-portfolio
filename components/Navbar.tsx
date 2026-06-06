@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { navLinks, profile } from "@/lib/data";
 import { ThemeToggle } from "./ThemeToggle";
+import { VisitorCount } from "./VisitorCount";
 
 export function Navbar({
   name  = profile.name,
@@ -77,6 +78,8 @@ export function Navbar({
                 </a>
               );
             })}
+
+            <VisitorCount />
 
             <ThemeToggle />
 
