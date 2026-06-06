@@ -6,6 +6,7 @@ import { Skills } from "@/components/Skills";
 import { Projects } from "@/components/Projects";
 import { Experience } from "@/components/Experience";
 import { Contact, Footer } from "@/components/Contact";
+import { Timeline } from "@/components/Timeline";
 import { SectionWrapper } from "@/components/SectionWrapper";
 import { getPortfolioData } from "@/sanity/lib/getData";
 
@@ -50,6 +51,10 @@ export default async function Home() {
           education={data.education}
           certifications={data.certifications}
         />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Timeline />
       </SectionWrapper>
 
       <SectionWrapper>

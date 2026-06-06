@@ -124,6 +124,14 @@ export default function CommandPalette() {
       onSelect: copyEmail,
     },
     {
+      id:       "nav-timeline",
+      label:    "Career Timeline",
+      hint:     "#timeline",
+      icon:     "⏱",
+      group:    "Navigation" as const,
+      onSelect: () => goToSection("#timeline"),
+    },
+    {
       id:       "action-linkedin",
       label:    "Open LinkedIn",
       hint:     "new tab ↗",
