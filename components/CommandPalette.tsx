@@ -124,6 +124,22 @@ export default function CommandPalette() {
       onSelect: () => { close(); router.push("/resume"); },
     },
     {
+      id:       "page-snippets",
+      label:    "Code Snippets",
+      hint:     "/snippets",
+      icon:     "🧩",
+      group:    "Pages",
+      onSelect: () => { close(); router.push("/snippets"); },
+    },
+    {
+      id:       "page-resources",
+      label:    "Dev Resources",
+      hint:     "/resources",
+      icon:     "📚",
+      group:    "Pages",
+      onSelect: () => { close(); router.push("/resources"); },
+    },
+    {
       id:       "action-email",
       label:    copied ? "Copied!" : "Copy email",
       hint:     profile.email,
