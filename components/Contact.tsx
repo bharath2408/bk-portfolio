@@ -1,10 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { profile } from "@/lib/data";
 import { Reveal } from "./Reveal";
+import { makeParticles, type Particle } from "@/lib/confetti";
+
+function ConfettiBurst({ origin }: { origin: { x: number; y: number } }) {
+  const [particles] = useState<Particle[]>(() => makeParticles(90));
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+
+  return createPortal(
+    <div
+      className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden"
+      aria-hidden
+    >
+      {particles.map((p) => (
+        <motion.span
+          key={p.id}
+          className="absolute block rounded-sm"
+          style={{
+            left: origin.x,
+            top:  origin.y,
+            width:     p.size,
+            height:    p.size * 0.5,
+            background: p.color,
+            boxShadow: `0 0 ${p.size}px ${p.color}88`,
+          }}
+          initial={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 }}
+          animate={{
+            x:       p.x * 8,
+            y:       p.y * 6 - 120,
+            opacity: 0,
+            rotate:  p.rotate,
+            scale:   0,
+          }}
+          transition={{ duration: p.duration + 0.3, delay: p.delay, ease: "easeOut" }}
+        />
+      ))}
+    </div>,
+    document.body,
+  );
+}
 
 const contactItems = [
   { icon: "✉", label: "Email", value: profile.email, href: `mailto:${profile.email}` },
@@ -24,9 +66,12 @@ export function Contact({
   phone?:    string;
   location?: string;
 }) {
-  const [form, setForm]     = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [error, setError]   = useState("");
+  const [form, setForm]       = useState({ name: "", email: "", message: "" });
+  const [status, setStatus]   = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError]     = useState("");
+  const [burst, setBurst]     = useState(false);
+  const [origin, setOrigin]   = useState({ x: 0, y: 0 });
+  const btnRef                = useRef<HTMLButtonElement>(null);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((p) => ({ ...p, [k]: e.target.value }));
@@ -48,6 +93,12 @@ export function Contact({
       }
       setStatus("sent");
       setForm({ name: "", email: "", message: "" });
+      if (btnRef.current) {
+        const r = btnRef.current.getBoundingClientRect();
+        setOrigin({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+      }
+      setBurst(true);
+      setTimeout(() => setBurst(false), 1800);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
       setStatus("error");
@@ -185,7 +236,10 @@ export function Contact({
               )}
             </AnimatePresence>
 
+            {burst && <ConfettiBurst origin={origin} />}
+
             <button
+              ref={btnRef}
               type="submit"
               disabled={status === "sending" || status === "sent"}
               className="glow-btn rounded-xl grad-bg px-6 py-3 text-sm font-semibold text-bg disabled:opacity-60 disabled:cursor-not-allowed transition-opacity"
