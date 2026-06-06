@@ -91,7 +91,9 @@ export function Navbar({
             </button>
 
             <a
-              href={`mailto:${email}`}
+              href={profile.resume}
+              target="_blank"
+              rel="noopener noreferrer"
               className="glow-btn rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-bg"
             >
               Resume
@@ -126,7 +128,9 @@ export function Navbar({
                 </a>
               ))}
               <a
-                href={`mailto:${email}`}
+                href={profile.resume}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-xl grad-bg px-4 py-2.5 text-center text-sm font-semibold text-bg"
               >

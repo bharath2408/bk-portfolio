@@ -213,8 +213,9 @@ export default function MysteryBox() {
               >
                 {/* Resume download */}
                 <a
-                  href="/resume.pdf"
-                  download
+                  href="https://drive.google.com/file/d/1cWIjBkBaecODXMIY6WDY2FUU7uCH994o/view"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={close}
                   className="glow-btn flex items-center justify-center gap-2 rounded-xl grad-bg py-3 text-sm font-bold text-bg"
                 >

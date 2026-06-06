@@ -13,6 +13,7 @@ export const profile = {
   email: "bharatha24kumar@gmail.com",
   phone: "+91 93427 26196",
   linkedin: "https://linkedin.com/in/bharathakumar",
+  resume: "https://drive.google.com/file/d/1cWIjBkBaecODXMIY6WDY2FUU7uCH994o/view",
   siteUrl: "https://bk-portfolio-bharath2408.vercel.app",
   tagline: "building AI-powered web experiences",
   blurb:
