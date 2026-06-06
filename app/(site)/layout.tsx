@@ -1,4 +1,5 @@
 import { ParallaxBackground } from "@/components/ParallaxBackground";
+import { PixelPet } from "@/components/PixelPet";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <ParallaxBackground />
       {children}
       <div className="grain" aria-hidden />
+      <PixelPet />
     </>
   );
 }

@@ -271,6 +271,7 @@ export function Footer({ name = profile.name }: { name?: string }) {
           <Link href="/resume"    className="font-mono text-xs text-faint transition-colors hover:text-iris">📄 Resume</Link>
           <Link href="/snippets"  className="font-mono text-xs text-faint transition-colors hover:text-iris">🧩 Snippets</Link>
           <Link href="/resources" className="font-mono text-xs text-faint transition-colors hover:text-mint">📚 Resources</Link>
+          <Link href="/terminal"  className="font-mono text-xs text-faint transition-colors hover:text-mint">&gt;_ Terminal</Link>
         </div>
       </div>
     </footer>

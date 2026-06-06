@@ -5,6 +5,7 @@ import { Command } from "cmdk";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { navLinks, profile } from "@/lib/data";
+import { MatrixRain } from "./MatrixRain";
 
 /* ── Types ───────────────────────────────────────────────── */
 type Group = "Navigation" | "Pages" | "Actions";
@@ -22,7 +23,8 @@ const GROUPS: Group[] = ["Navigation", "Pages", "Actions"];
 /* ── CommandPalette ──────────────────────────────────────── */
 export default function CommandPalette() {
   const [open,   setOpen]   = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied]   = useState(false);
+  const [matrix, setMatrix]   = useState(false);
   const reduced             = useReducedMotion();
   const router              = useRouter();
 
@@ -124,6 +126,22 @@ export default function CommandPalette() {
       onSelect: () => { close(); router.push("/resume"); },
     },
     {
+      id:       "fun-matrix",
+      label:    "Matrix Rain",
+      hint:     "🟩 hack mode",
+      icon:     "🟩",
+      group:    "Pages",
+      onSelect: () => { close(); setMatrix(true); },
+    },
+    {
+      id:       "page-terminal",
+      label:    "Open Terminal",
+      hint:     "/terminal",
+      icon:     ">_",
+      group:    "Pages",
+      onSelect: () => { close(); router.push("/terminal"); },
+    },
+    {
       id:       "page-snippets",
       label:    "Code Snippets",
       hint:     "/snippets",
@@ -168,6 +186,7 @@ export default function CommandPalette() {
   const dur = reduced ? 0 : 0.18;
 
   return (
+    <>
     <AnimatePresence>
       {open && (
         <>
@@ -282,5 +301,7 @@ export default function CommandPalette() {
         </>
       )}
     </AnimatePresence>
+    {matrix && <MatrixRain onDone={() => setMatrix(false)} />}
+    </>
   );
 }
