@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { profile } from "@/lib/data";
 import { Counter } from "./Counter";
+import { IntroVideoModal } from "./IntroVideoModal";
 import type { Stat } from "@/lib/types";
 
 const HeroOrb = dynamic(() => import("./HeroOrb"), { ssr: false });
@@ -40,6 +41,7 @@ export function Hero({
   openToWork?: boolean;
   availabilityText?: string;
 }) {
+  const [videoOpen, setVideoOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -114,6 +116,16 @@ export function Hero({
             >
               Get in touch
             </a>
+            <button
+              onClick={() => setVideoOpen(true)}
+              className="group inline-flex items-center gap-2.5 rounded-xl border border-iris/40 bg-iris/10 px-5 py-3.5 text-sm font-semibold text-iris transition-all hover:border-iris/70 hover:bg-iris/20"
+            >
+              <span className="relative flex h-5 w-5 items-center justify-center">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-iris opacity-30" />
+                <span className="relative flex h-4 w-4 items-center justify-center rounded-full bg-iris text-[9px] text-white">▶</span>
+              </span>
+              Watch Intro
+            </button>
           </motion.div>
 
           <motion.div
@@ -170,6 +182,8 @@ export function Hero({
           <span />
         </div>
       </motion.div>
+
+      <IntroVideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
     </section>
   );
 }
