@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-const BASE  = process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+const BASE  = process.env.KV_REST_API_URL;
+const TOKEN = process.env.KV_REST_API_TOKEN;
 const KEY   = "bk:presence";
 const TTL   = 35; // seconds — client re-pings every 30 s
 
