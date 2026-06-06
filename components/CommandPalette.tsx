@@ -116,6 +116,14 @@ export default function CommandPalette() {
       onSelect: () => { close(); router.push("/guestbook"); },
     },
     {
+      id:       "page-resume",
+      label:    "View Resume",
+      hint:     "/resume",
+      icon:     "📄",
+      group:    "Pages",
+      onSelect: () => { close(); router.push("/resume"); },
+    },
+    {
       id:       "action-email",
       label:    copied ? "Copied!" : "Copy email",
       hint:     profile.email,
