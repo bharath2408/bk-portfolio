@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import Link from "next/link";
 import { profile, experience, education, skillGroups, projects } from "@/lib/data";
 
-type Line = { type: "input" | "output" | "error" | "system"; text: string };
+type Line = { type: "input" | "output" | "error" | "system" | "ai"; text: string };
 
 const BANNER = `
 ██████╗ ██╗  ██╗    ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗
@@ -32,6 +32,9 @@ const COMMANDS: Record<string, () => string[]> = {
     "  clear        ·  Clear terminal",
     "  matrix       ·  🟩 ???",
     "  secret       ·  ???",
+    "",
+    "  AI mode — type any question and Groq AI will answer it.",
+    "  Examples: 'what is React?' · 'what stack does Bharatha use?' · 'explain Next.js'",
     "",
     "Tip: use ↑ / ↓ to navigate history",
   ],
@@ -128,26 +131,85 @@ const COMMANDS: Record<string, () => string[]> = {
   node:  () => [`node v${Math.floor(Math.random() * 4 + 18)}.0.0`],
 };
 
+const AI_THINKING_ID = "__ai_thinking__";
+
 export default function TerminalPage() {
   const [lines,   setLines]   = useState<Line[]>([
     { type: "system", text: BANNER },
-    { type: "system", text: `BK Terminal v1.0.0  |  ${new Date().toLocaleDateString("en-IN")}` },
-    { type: "system", text: 'Type "help" to see available commands.' },
+    { type: "system", text: `BK Terminal v2.0.0  |  ${new Date().toLocaleDateString("en-IN")}  |  Groq AI enabled` },
+    { type: "system", text: 'Type "help" to see available commands. Unknown commands are answered by AI.' },
     { type: "system", text: "" },
   ]);
-  const [input,   setInput]   = useState("");
-  const [history, setHistory] = useState<string[]>([]);
-  const [histIdx, setHistIdx] = useState(-1);
+  const [input,    setInput]    = useState("");
+  const [history,  setHistory]  = useState<string[]>([]);
+  const [histIdx,  setHistIdx]  = useState(-1);
   const [matrixOn, setMatrixOn] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
 
   const bottomRef  = useRef<HTMLDivElement>(null);
   const inputRef   = useRef<HTMLInputElement>(null);
+  const aiAbortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [lines]);
 
   useEffect(() => { inputRef.current?.focus(); }, []);
+
+  async function askAI(query: string) {
+    setAiLoading(true);
+    aiAbortRef.current = new AbortController();
+
+    // Add a live "thinking" placeholder line
+    const thinkingLine: Line = { type: "ai", text: "ai ▶ thinking…" };
+    setLines((p) => [...p, thinkingLine]);
+
+    try {
+      const res = await fetch("/api/terminal", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ query }),
+        signal:  aiAbortRef.current.signal,
+      });
+
+      if (!res.ok || !res.body) throw new Error("API error");
+
+      const reader  = res.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = "";
+
+      // Replace the thinking line with streaming content
+      setLines((p) => {
+        const next = [...p];
+        next[next.length - 1] = { type: "ai", text: "ai ▶ " };
+        return next;
+      });
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        accumulated += decoder.decode(value, { stream: true });
+        const display = accumulated;
+        setLines((p) => {
+          const next = [...p];
+          next[next.length - 1] = { type: "ai", text: "ai ▶ " + display };
+          return next;
+        });
+      }
+
+      // Final empty line separator
+      setLines((p) => [...p, { type: "output", text: "" }]);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      setLines((p) => {
+        const next = [...p];
+        next[next.length - 1] = { type: "error", text: "ai: connection failed. check your network." };
+        return [...next, { type: "output", text: "" }];
+      });
+    } finally {
+      setAiLoading(false);
+    }
+  }
 
   function run(cmd: string) {
     const trimmed = cmd.trim().toLowerCase();
@@ -159,7 +221,7 @@ export default function TerminalPage() {
     }
 
     if (trimmed === "clear") {
-      setLines([{ type: "system", text: 'Type "help" to see available commands.' }]);
+      setLines([{ type: "system", text: 'Type "help" to see available commands. Unknown commands are answered by AI.' }]);
       return;
     }
 
@@ -181,16 +243,19 @@ export default function TerminalPage() {
     const handler = COMMANDS[trimmed];
     if (handler) {
       handler().forEach((t) => newLines.push({ type: "output", text: t }));
-    } else {
-      newLines.push({ type: "error", text: `command not found: ${trimmed}. Type "help" for commands.` });
+      newLines.push({ type: "output", text: "" });
+      setLines((p) => [...p, ...newLines]);
+      return;
     }
 
-    newLines.push({ type: "output", text: "" });
+    // Unknown command → ask Groq AI
     setLines((p) => [...p, ...newLines]);
+    askAI(cmd.trim());
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
+      if (aiLoading) return; // block while AI is responding
       const cmd = input.trim();
       if (cmd) setHistory((h) => [cmd, ...h]);
       setHistIdx(-1);
@@ -206,6 +271,11 @@ export default function TerminalPage() {
       const idx = Math.max(histIdx - 1, -1);
       setHistIdx(idx);
       setInput(idx === -1 ? "" : history[idx]);
+    } else if (e.key === "c" && e.ctrlKey && aiLoading) {
+      // Ctrl+C to abort AI stream
+      aiAbortRef.current?.abort();
+      setAiLoading(false);
+      setLines((p) => [...p, { type: "error", text: "^C" }, { type: "output", text: "" }]);
     }
   }
 
@@ -226,13 +296,20 @@ export default function TerminalPage() {
             visitor@bk-portfolio: ~
           </span>
         </div>
-        <Link
-          href="/"
-          className="text-xs text-[#00ff41]/50 hover:text-[#00ff41] transition-colors"
-          onClick={(e) => e.stopPropagation()}
-        >
-          ← Exit terminal
-        </Link>
+        <div className="flex items-center gap-4">
+          {aiLoading && (
+            <span className="text-xs text-[#facc15] animate-pulse">
+              ⟳ AI thinking… (Ctrl+C to abort)
+            </span>
+          )}
+          <Link
+            href="/"
+            className="text-xs text-[#00ff41]/50 hover:text-[#00ff41] transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            ← Exit terminal
+          </Link>
+        </div>
       </div>
 
       {/* Output */}
@@ -244,6 +321,7 @@ export default function TerminalPage() {
               l.type === "input"  ? "text-[#c4b5fd]" :
               l.type === "error"  ? "text-red-400" :
               l.type === "system" ? "text-[#00ff41]/70" :
+              l.type === "ai"     ? "text-[#38bdf8]" :
               "text-[#00ff41]"
             }`}
           >
@@ -261,12 +339,13 @@ export default function TerminalPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKey}
-          className="flex-1 bg-transparent outline-none text-[#00ff41] caret-[#00ff41] placeholder:text-[#00ff41]/30"
-          placeholder="type a command…"
+          disabled={aiLoading}
+          className="flex-1 bg-transparent outline-none text-[#00ff41] caret-[#00ff41] placeholder:text-[#00ff41]/30 disabled:opacity-50"
+          placeholder={aiLoading ? "waiting for AI…" : "type a command or ask anything…"}
           autoComplete="off"
           spellCheck={false}
         />
-        <span className="animate-pulse text-[#00ff41]">█</span>
+        <span className={`text-[#00ff41] ${aiLoading ? "opacity-30" : "animate-pulse"}`}>█</span>
       </div>
 
       {/* Matrix overlay */}
