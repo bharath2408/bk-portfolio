@@ -46,6 +46,8 @@ export async function getPortfolioData(): Promise<PortfolioData> {
     tagline: s.tagline ?? fbProfile.tagline,
     blurb: s.blurb ?? fbProfile.blurb,
     about: s.about ?? fbProfile.about,
+    openToWork: s.openToWork ?? true,
+    availabilityText: s.availabilityText ?? "Available for opportunities",
     stats: has(s.stats) ? s.stats : fbProfile.stats,
     highlights: has(s.highlights) ? s.highlights : fbProfile.highlights,
     marquee: has(s.marquee) ? s.marquee : fbMarquee,

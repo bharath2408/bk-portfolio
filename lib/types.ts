@@ -52,6 +52,8 @@ export interface PortfolioData {
   tagline: string;
   blurb: string;
   about: string;
+  openToWork: boolean;
+  availabilityText: string;
   stats: Stat[];
   highlights: Highlight[];
   marquee: string[];

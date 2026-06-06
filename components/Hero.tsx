@@ -30,11 +30,15 @@ export function Hero({
   blurb = profile.blurb,
   stats = profile.stats,
   email = profile.email,
+  openToWork = true,
+  availabilityText = "Available for opportunities",
 }: {
   role?: string;
   blurb?: string;
   stats?: Stat[];
   email?: string;
+  openToWork?: boolean;
+  availabilityText?: string;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -58,16 +62,18 @@ export function Hero({
       <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
         {/* Left — text drifts slowly */}
         <motion.div style={{ y: textY, opacity: fadeOut }} className="flex flex-col items-start">
-          <motion.div
-            custom={0}
-            variants={fade}
-            initial="hidden"
-            animate="show"
-            className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3.5 py-2"
-          >
-            <span className="h-2 w-2 rounded-full bg-mint animate-pulse-dot" />
-            <span className="text-xs font-medium text-muted">Available for opportunities</span>
-          </motion.div>
+          {openToWork && (
+            <motion.div
+              custom={0}
+              variants={fade}
+              initial="hidden"
+              animate="show"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3.5 py-2"
+            >
+              <span className="h-2 w-2 rounded-full bg-mint animate-pulse-dot" />
+              <span className="text-xs font-medium text-muted">{availabilityText}</span>
+            </motion.div>
+          )}
 
           <motion.h1
             custom={1}

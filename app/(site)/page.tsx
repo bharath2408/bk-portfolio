@@ -25,6 +25,8 @@ export default async function Home() {
         blurb={data.blurb}
         stats={data.stats}
         email={data.email}
+        openToWork={data.openToWork}
+        availabilityText={data.availabilityText}
       />
 
       {/* Marquee is a thin strip — parallax would look jittery here */}

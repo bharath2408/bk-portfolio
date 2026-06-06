@@ -49,6 +49,20 @@ export default defineType({
       of: [{ type: "string" }],
       options: { layout: "tags" },
     }),
+    defineField({
+      name:         "openToWork",
+      title:        "Show 'Open to Work' banner",
+      type:         "boolean",
+      initialValue: true,
+      description:  "Toggle the availability badge on the hero section",
+    }),
+    defineField({
+      name:        "availabilityText",
+      title:       "Availability text",
+      type:        "string",
+      initialValue: "Available for opportunities",
+      description: "Custom label shown inside the badge (e.g. 'Open to freelance & full-time')",
+    }),
   ],
   preview: { prepare: () => ({ title: "Site Settings" }) },
 });

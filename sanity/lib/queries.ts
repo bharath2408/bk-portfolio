@@ -4,7 +4,8 @@ import { groq } from "next-sanity";
 export const PORTFOLIO_QUERY = groq`{
   "settings": *[_type == "siteSettings"][0]{
     name, role, location, email, phone, linkedin, tagline, blurb, about,
-    stats[]{value, label}, highlights[]{title, sub}, marquee
+    stats[]{value, label}, highlights[]{title, sub}, marquee,
+    openToWork, availabilityText
   },
   "skills": *[_type == "skillGroup"] | order(order asc){ title, accent, items },
   "projects": *[_type == "project"] | order(order asc){
