@@ -26,24 +26,26 @@ export function VisitorCount() {
       const res = await fetch("/api/presence");
       if (res.ok) {
         const data = await res.json();
-        setCount(data.count ?? 0);
+        setCount(typeof data.count === "number" ? data.count : null);
       }
-    }
-
-    async function unregister() {
-      navigator.sendBeacon(
-        "/api/presence",
-        new Blob([JSON.stringify({ id })], { type: "application/json" }),
-      );
     }
 
     register().then(poll);
     const interval = setInterval(() => { register(); poll(); }, 30_000);
-    window.addEventListener("beforeunload", unregister);
+
+    function handleUnload() {
+      /* sendBeacon is POST-only — use a dedicated unregister endpoint */
+      navigator.sendBeacon(
+        "/api/presence/unregister",
+        new Blob([JSON.stringify({ id })], { type: "application/json" }),
+      );
+    }
+
+    window.addEventListener("beforeunload", handleUnload);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener("beforeunload", unregister);
+      window.removeEventListener("beforeunload", handleUnload);
       fetch("/api/presence", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -53,8 +55,8 @@ export function VisitorCount() {
     };
   }, []);
 
-  /* hide if KV not configured (count stays 0) or still loading */
-  if (count === null || count === 0) return null;
+  /* null = KV not configured or still loading → hide */
+  if (count === null) return null;
 
   return (
     <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-faint">
@@ -62,7 +64,7 @@ export function VisitorCount() {
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mint opacity-60" />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-mint" />
       </span>
-      {count} viewing now
+      {count === 1 ? "1 person viewing" : `${count} viewing now`}
     </span>
   );
 }
