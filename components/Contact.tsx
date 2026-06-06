@@ -1,20 +1,62 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { profile } from "@/lib/data";
 import { Reveal } from "./Reveal";
 
+const contactItems = [
+  { icon: "✉", label: "Email", value: profile.email, href: `mailto:${profile.email}` },
+  { icon: "in", label: "LinkedIn", value: "linkedin.com/in/bharathakumar", href: profile.linkedin },
+  { icon: "📞", label: "Phone", value: profile.phone, href: `tel:${profile.phone}` },
+  { icon: "📍", label: "Location", value: profile.location, href: null },
+];
+
 export function Contact({
-  email = profile.email,
+  email    = profile.email,
   linkedin = profile.linkedin,
-  phone = profile.phone,
+  phone    = profile.phone,
   location = profile.location,
 }: {
-  email?: string;
+  email?:    string;
   linkedin?: string;
-  phone?: string;
+  phone?:    string;
   location?: string;
 }) {
+  const [form, setForm]     = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError]   = useState("");
+
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm((p) => ({ ...p, [k]: e.target.value }));
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
+    setStatus("sending");
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error ?? "Failed to send.");
+      }
+      setStatus("sent");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setStatus("error");
+    }
+  }
+
   return (
     <section id="contact" className="mx-auto max-w-shell px-6 py-28 md:px-10">
+      {/* Heading */}
       <Reveal className="flex flex-col items-center text-center">
         <div className="flex items-center gap-2.5">
           <span className="h-px w-7 grad-bg" />
@@ -23,37 +65,136 @@ export function Contact({
           </span>
           <span className="h-px w-7 grad-bg" />
         </div>
-
         <h2 className="mt-4 max-w-2xl font-display text-4xl font-extrabold leading-tight tracking-tight text-ink md:text-5xl">
           Let&apos;s build something great together
         </h2>
         <p className="mt-4 max-w-md text-base text-muted">
           Open to frontend and fullstack opportunities. I usually reply within a day.
         </p>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href={`mailto:${email}`}
-            className="glow-btn rounded-xl grad-bg px-6 py-3.5 text-sm font-semibold text-bg"
-          >
-            {email}
-          </a>
-          <a
-            href={linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-xl border border-line bg-surface-2 px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-line-strong"
-          >
-            LinkedIn
-          </a>
-        </div>
-
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-sm text-faint">
-          <span>{phone}</span>
-          <span className="hidden sm:inline">·</span>
-          <span>{location}</span>
-        </div>
       </Reveal>
+
+      {/* Two-column layout */}
+      <div className="mt-14 grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:items-start">
+
+        {/* Left — contact cards */}
+        <Reveal delay={0.1} className="flex flex-col gap-4">
+          {contactItems.map(({ icon, label, value, href }) => (
+            <div
+              key={label}
+              className="card flex items-center gap-4 rounded-2xl border border-line bg-surface-2 px-5 py-4"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-bg font-mono text-sm text-muted">
+                {icon}
+              </span>
+              <div className="min-w-0">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-faint">{label}</p>
+                {href ? (
+                  <a
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel="noreferrer"
+                    className="truncate text-sm font-medium text-ink hover:text-iris transition-colors"
+                  >
+                    {value}
+                  </a>
+                ) : (
+                  <p className="truncate text-sm font-medium text-ink">{value}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </Reveal>
+
+        {/* Right — contact form */}
+        <Reveal delay={0.2}>
+          <form
+            onSubmit={handleSubmit}
+            className="card rounded-2xl border border-line bg-surface-2 p-6 flex flex-col gap-4"
+          >
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <label className="font-mono text-[11px] uppercase tracking-widest text-faint">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Bharatha Kumar"
+                  value={form.name}
+                  onChange={set("name")}
+                  required
+                  maxLength={80}
+                  className="rounded-xl border border-line bg-bg px-4 py-2.5 text-sm text-ink placeholder:text-faint focus:border-iris/60 focus:outline-none focus:ring-1 focus:ring-iris/30 transition-colors"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="font-mono text-[11px] uppercase tracking-widest text-faint">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={set("email")}
+                  required
+                  className="rounded-xl border border-line bg-bg px-4 py-2.5 text-sm text-ink placeholder:text-faint focus:border-iris/60 focus:outline-none focus:ring-1 focus:ring-iris/30 transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between">
+                <label className="font-mono text-[11px] uppercase tracking-widest text-faint">
+                  Message
+                </label>
+                <span className="font-mono text-[11px] text-faint">{form.message.length}/2000</span>
+              </div>
+              <textarea
+                placeholder="Tell me about your project or opportunity…"
+                value={form.message}
+                onChange={set("message")}
+                required
+                rows={5}
+                maxLength={2000}
+                className="resize-none rounded-xl border border-line bg-bg px-4 py-2.5 text-sm text-ink placeholder:text-faint focus:border-iris/60 focus:outline-none focus:ring-1 focus:ring-iris/30 transition-colors"
+              />
+            </div>
+
+            {/* Feedback */}
+            <AnimatePresence mode="wait">
+              {status === "error" && (
+                <motion.p
+                  key="err"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-400"
+                >
+                  {error}
+                </motion.p>
+              )}
+              {status === "sent" && (
+                <motion.p
+                  key="ok"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="rounded-xl border border-mint/30 bg-mint/10 px-4 py-2.5 text-sm text-mint"
+                >
+                  Message sent! I&apos;ll get back to you soon.
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <button
+              type="submit"
+              disabled={status === "sending" || status === "sent"}
+              className="glow-btn rounded-xl grad-bg px-6 py-3 text-sm font-semibold text-bg disabled:opacity-60 disabled:cursor-not-allowed transition-opacity"
+            >
+              {status === "sending" ? "Sending…" : status === "sent" ? "Sent ✓" : "Send message"}
+            </button>
+          </form>
+        </Reveal>
+      </div>
     </section>
   );
 }
@@ -64,27 +205,9 @@ export function Footer({ name = profile.name }: { name?: string }) {
       <div className="mx-auto flex max-w-shell flex-col items-center justify-between gap-2 px-6 py-7 text-xs text-faint sm:flex-row md:px-10">
         <span>© {new Date().getFullYear()} {name}</span>
         <span className="font-mono">Built with Next.js · Tailwind · Sanity</span>
-        <Link
-          href="/games"
-          className="font-mono transition-colors hover:text-iris"
-          title="Play the mini game"
-        >
-          🎮 Mini Game
-        </Link>
-        <Link
-          href="/tools"
-          className="font-mono transition-colors hover:text-cyan"
-          title="Dev tools"
-        >
-          🛠 Dev Tools
-        </Link>
-        <Link
-          href="/guestbook"
-          className="font-mono transition-colors hover:text-mint"
-          title="Guestbook"
-        >
-          ✍️ Guestbook
-        </Link>
+        <Link href="/games"    className="font-mono transition-colors hover:text-iris"  title="Play the mini game">🎮 Mini Game</Link>
+        <Link href="/tools"    className="font-mono transition-colors hover:text-cyan"  title="Dev tools">🛠 Dev Tools</Link>
+        <Link href="/guestbook" className="font-mono transition-colors hover:text-mint" title="Guestbook">✍️ Guestbook</Link>
       </div>
     </footer>
   );
