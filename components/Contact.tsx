@@ -256,13 +256,20 @@ export function Contact({
 export function Footer({ name = profile.name }: { name?: string }) {
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-shell flex-col items-center justify-between gap-2 px-6 py-7 text-xs text-faint sm:flex-row md:px-10">
-        <span>© {new Date().getFullYear()} {name}</span>
-        <span className="font-mono">Built with Next.js · Tailwind · Sanity</span>
-        <Link href="/games"    className="font-mono transition-colors hover:text-iris"  title="Play the mini game">🎮 Mini Game</Link>
-        <Link href="/tools"    className="font-mono transition-colors hover:text-cyan"  title="Dev tools">🛠 Dev Tools</Link>
-        <Link href="/guestbook" className="font-mono transition-colors hover:text-mint" title="Guestbook">✍️ Guestbook</Link>
-        <Link href="/resume"    className="font-mono transition-colors hover:text-iris" title="Resume">📄 Resume</Link>
+      <div className="mx-auto max-w-shell px-6 py-6 md:px-10">
+        {/* Top row — copyright + stack */}
+        <div className="flex flex-col items-center gap-1 text-center sm:flex-row sm:justify-between sm:text-left">
+          <span className="text-xs text-faint">© {new Date().getFullYear()} {name}</span>
+          <span className="font-mono text-xs text-faint">Built with Next.js · Tailwind · Sanity</span>
+        </div>
+
+        {/* Bottom row — links */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
+          <Link href="/games"     className="font-mono text-xs text-faint transition-colors hover:text-iris">🎮 Mini Games</Link>
+          <Link href="/tools"     className="font-mono text-xs text-faint transition-colors hover:text-cyan">🛠 Dev Tools</Link>
+          <Link href="/guestbook" className="font-mono text-xs text-faint transition-colors hover:text-mint">✍️ Guestbook</Link>
+          <Link href="/resume"    className="font-mono text-xs text-faint transition-colors hover:text-iris">📄 Resume</Link>
+        </div>
       </div>
     </footer>
   );

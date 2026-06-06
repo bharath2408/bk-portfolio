@@ -86,96 +86,7 @@ const accentMap = {
   mint: { dot: "bg-mint", border: "border-mint/40", text: "text-mint", tag: "bg-mint/10 text-mint" },
 };
 
-function MilestoneCard({
-  m,
-  index,
-}: {
-  m: Milestone;
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const isLeft = index % 2 === 0;
-  const a = accentMap[m.accent];
-
-  return (
-    <div ref={ref} className="relative grid lg:grid-cols-[1fr_56px_1fr] lg:gap-0 gap-4">
-      {/* Left side */}
-      <div
-        className={`lg:pr-8 ${isLeft ? "lg:block" : "lg:block"} ${
-          !isLeft ? "lg:col-start-1 lg:text-right" : ""
-        }`}
-      >
-        {isLeft ? (
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className={`card rounded-2xl border ${a.border} bg-surface-2 p-5 shadow-lg`}
-          >
-            <CardContent m={m} a={a} />
-          </motion.div>
-        ) : (
-          <div className="hidden lg:block" />
-        )}
-      </div>
-
-      {/* Centre dot */}
-      <div className="hidden lg:flex flex-col items-center">
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={inView ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 0.4, delay: 0.15 }}
-          className={`z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 ${a.border} bg-bg text-lg shadow-lg`}
-        >
-          {m.icon}
-        </motion.div>
-      </div>
-
-      {/* Right side */}
-      <div className={`lg:pl-8 ${isLeft ? "" : ""}`}>
-        {!isLeft ? (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className={`card rounded-2xl border ${a.border} bg-surface-2 p-5 shadow-lg`}
-          >
-            <CardContent m={m} a={a} />
-          </motion.div>
-        ) : (
-          <div className="hidden lg:block" />
-        )}
-      </div>
-
-      {/* Mobile: always full-width */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        className={`lg:hidden flex gap-4`}
-      >
-        <div className="flex flex-col items-center">
-          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border ${a.border} bg-bg text-base`}>
-            {m.icon}
-          </div>
-          <div className={`mt-2 flex-1 w-px ${a.dot} opacity-30`} />
-        </div>
-        <div className={`card mb-4 flex-1 rounded-2xl border ${a.border} bg-surface-2 p-4`}>
-          <CardContent m={m} a={a} />
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-function CardContent({
-  m,
-  a,
-}: {
-  m: Milestone;
-  a: (typeof accentMap)[keyof typeof accentMap];
-}) {
+function CardContent({ m, a }: { m: Milestone; a: (typeof accentMap)[keyof typeof accentMap] }) {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -191,16 +102,98 @@ function CardContent({
   );
 }
 
+function MilestoneCard({ m, index }: { m: Milestone; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const isLeft = index % 2 === 0;
+  const a = accentMap[m.accent];
+
+  return (
+    <div ref={ref}>
+      {/* ── Mobile layout ── */}
+      <div className="flex gap-3 lg:hidden">
+        {/* Left: icon + connector line */}
+        <div className="flex flex-col items-center">
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={inView ? { scale: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.35, delay: 0.1 }}
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border ${a.border} bg-bg text-base shadow`}
+          >
+            {m.icon}
+          </motion.div>
+          {index < milestones.length - 1 && (
+            <div className={`mt-2 w-px flex-1 ${a.dot} opacity-25`} />
+          )}
+        </div>
+
+        {/* Right: card */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className={`mb-6 flex-1 rounded-2xl border ${a.border} bg-surface-2 p-4 shadow`}
+        >
+          <CardContent m={m} a={a} />
+        </motion.div>
+      </div>
+
+      {/* ── Desktop layout (alternating) ── */}
+      <div className="hidden lg:grid lg:grid-cols-[1fr_64px_1fr] lg:items-start">
+        {/* Left column */}
+        <div className="pr-8">
+          {isLeft && (
+            <motion.div
+              initial={{ opacity: 0, x: -36 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.55, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className={`card rounded-2xl border ${a.border} bg-surface-2 p-5 shadow-lg`}
+            >
+              <CardContent m={m} a={a} />
+            </motion.div>
+          )}
+        </div>
+
+        {/* Centre dot */}
+        <div className="flex justify-center">
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={inView ? { scale: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.35, delay: 0.15 }}
+            className={`z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 ${a.border} bg-bg text-xl shadow-lg`}
+          >
+            {m.icon}
+          </motion.div>
+        </div>
+
+        {/* Right column */}
+        <div className="pl-8">
+          {!isLeft && (
+            <motion.div
+              initial={{ opacity: 0, x: 36 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.55, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className={`card rounded-2xl border ${a.border} bg-surface-2 p-5 shadow-lg`}
+            >
+              <CardContent m={m} a={a} />
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Timeline() {
   return (
     <section id="timeline" className="mx-auto max-w-shell px-6 py-24 md:px-10">
       <SectionHeading eyebrow="Journey" title="Career timeline" />
 
       <div className="relative mt-14">
-        {/* Vertical line — desktop only */}
+        {/* Centre vertical line — desktop only */}
         <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-iris/40 via-cyan/40 to-mint/40 lg:block" />
 
-        <div className="flex flex-col gap-10 lg:gap-12">
+        <div className="flex flex-col lg:gap-10">
           {milestones.map((m, i) => (
             <MilestoneCard key={m.title} m={m} index={i} />
           ))}
