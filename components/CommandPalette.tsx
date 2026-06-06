@@ -108,6 +108,14 @@ export default function CommandPalette() {
       onSelect: () => { close(); router.push("/tools"); },
     },
     {
+      id:       "page-guestbook",
+      label:    "Guestbook",
+      hint:     "/guestbook",
+      icon:     "✍️",
+      group:    "Pages",
+      onSelect: () => { close(); router.push("/guestbook"); },
+    },
+    {
       id:       "action-email",
       label:    copied ? "Copied!" : "Copy email",
       hint:     profile.email,

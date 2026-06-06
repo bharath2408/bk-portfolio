@@ -78,6 +78,13 @@ export function Footer({ name = profile.name }: { name?: string }) {
         >
           🛠 Dev Tools
         </Link>
+        <Link
+          href="/guestbook"
+          className="font-mono transition-colors hover:text-mint"
+          title="Guestbook"
+        >
+          ✍️ Guestbook
+        </Link>
       </div>
     </footer>
   );
