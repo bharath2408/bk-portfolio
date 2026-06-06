@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { profile, skillGroups, experience, education, certifications, projects } from "@/lib/data";
+import { PrintButton } from "@/components/PrintButton";
 
 export const metadata: Metadata = {
   title: `${profile.name} — Resume`,
@@ -22,12 +23,7 @@ export default function ResumePage() {
         </Link>
         <div className="flex items-center gap-3">
           <span className="text-xs text-gray-400">Ready to print · A4</span>
-          <button
-            onClick={() => window.print()}
-            className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700 transition-colors"
-          >
-            Download PDF
-          </button>
+          <PrintButton />
         </div>
       </div>
 
