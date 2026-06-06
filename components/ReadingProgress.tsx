@@ -26,7 +26,7 @@ export function ReadingProgress() {
         right:      0,
         height:     3,
         zIndex:     9995,
-        background: "linear-gradient(90deg, #7C5CFF 0%, #22D3EE 100%)",
+        background: "linear-gradient(90deg, #9365FF 0%, #C41E3A 100%)",
       }}
     />
   );

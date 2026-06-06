@@ -15,11 +15,11 @@ interface Particle {
 }
 
 const COLORS = [
-  "#7C5CFF", // iris
-  "#22D3EE", // cyan
-  "#34D399", // mint
-  "#A78BFA", // violet
-  "#67E8F9", // sky
+  "#9365FF", // vibranium violet
+  "#C41E3A", // royal crimson
+  "#94A3B8", // vibranium silver
+  "#B48FFF", // pale violet
+  "#E05070", // rose crimson
 ];
 const MAX_PARTICLES = 60;
 

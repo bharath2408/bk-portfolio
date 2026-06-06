@@ -32,11 +32,11 @@ function BKMesh() {
         >
           BK
           <meshStandardMaterial
-            color="#7C5CFF"
-            roughness={0.08}
-            metalness={0.85}
-            emissive="#22d3ee"
-            emissiveIntensity={0.18}
+            color="#9365FF"
+            roughness={0.06}
+            metalness={0.92}
+            emissive="#C41E3A"
+            emissiveIntensity={0.28}
           />
         </Text3D>
       </Center>
@@ -54,8 +54,8 @@ export default function BK3D() {
     >
       <ambientLight intensity={0.4} />
       <directionalLight position={[4,  6,  4]} intensity={2.2} color="#ffffff" />
-      <pointLight      position={[-3, -2,  2]} intensity={1.8} color="#22d3ee" />
-      <pointLight      position={[ 3,  2, -1]} intensity={1.4} color="#7C5CFF" />
+      <pointLight      position={[-3, -2,  2]} intensity={2.2} color="#C41E3A" />
+      <pointLight      position={[ 3,  2, -1]} intensity={1.6} color="#9365FF" />
 
       <Float speed={1.6} rotationIntensity={0.04} floatIntensity={0.3}>
         <BKMesh />

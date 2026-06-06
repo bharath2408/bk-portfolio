@@ -3,88 +3,88 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════════════
-   DESIGN TOKENS — CSS custom properties
-   Components reference these via Tailwind's rgb(var()) shim.
-   Dark theme is the default (:root); light overrides follow.
+   BLACK PANTHER — KING EDITION
+   Vibranium Violet × Royal Crimson × Platinum Silver
+   The King of Wakanda palette: void-black, deep violet, battle scarlet.
+   Dark  = default (:root)
+   Light = [data-theme="light"]
    ═══════════════════════════════════════════════════════════ */
 
 :root {
   /* ── Fonts ── */
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
 
-  /* ── Gradient (iris → cyan) ── */
-  --grad: linear-gradient(120deg, #7c5cff 0%, #22d3ee 100%);
+  /* ── Gradient: Vibranium → Royal Crimson ── */
+  --grad: linear-gradient(135deg, #7B35E8 0%, #B81836 100%);
 
-  /* ── Dark palette — RGB triplets for Tailwind alpha modifiers ── */
-  --c-bg:        7   7   11;   /* #07070B */
-  --c-bg-soft:   14  14  21;   /* #0E0E15 */
-  --c-surface:   19  19  28;   /* #13131C */
-  --c-surface-2: 26  26  38;   /* #1A1A26 */
-  --c-ink:       236 236 242;  /* #ECECF2 */
-  --c-muted:     155 155 174;  /* #9B9BAE */
-  --c-faint:     106 106 124;  /* #6A6A7C */
-  --c-iris:      124 92  255;  /* #7C5CFF */
-  --c-cyan:      34  211 238;  /* #22D3EE */
-  --c-mint:      52  211 153;  /* #34D399 */
+  /* ── Dark palette — void-black with vibranium soul ── */
+  --c-bg:        4   3   8;    /* #040308  absolute dark       */
+  --c-bg-soft:   9   7   16;   /* #090710                      */
+  --c-surface:   14  12  22;   /* #0E0C16                      */
+  --c-surface-2: 20  17  34;   /* #141122                      */
+  --c-ink:       240 236 255;  /* #F0ECFF  white w/ violet tint */
+  --c-muted:     158 150 188;  /* #9E96BC  lavender-grey        */
+  --c-faint:     90  84  118;  /* #5A5476                       */
+  --c-iris:      147 101 255;  /* #9365FF  vibranium violet     */
+  --c-cyan:      196 30  58;   /* #C41E3A  royal crimson        */
+  --c-mint:      148 163 184;  /* #94A3B8  vibranium silver     */
 
-  /* ── Line colours (full rgba — no alpha modifier needed) ── */
-  --c-line:        rgba(255, 255, 255, 0.08);
-  --c-line-strong: rgba(255, 255, 255, 0.14);
+  /* ── Borders: violet-tinted glass ── */
+  --c-line:        rgba(147, 101, 255, 0.14);
+  --c-line-strong: rgba(147, 101, 255, 0.24);
 
-  /* ── Card chrome (adapts per theme) ── */
-  --card-face:         linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0));
-  --card-border:       rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(255, 255, 255, 0.16);
-  --card-hover-shadow: rgba(0, 0, 0, 0.8);
+  /* ── Card chrome: violet face → crimson hover border ── */
+  --card-face:         linear-gradient(180deg, rgba(147,101,255,0.06), rgba(0,0,0,0));
+  --card-border:       rgba(147, 101, 255, 0.18);
+  --card-border-hover: rgba(196, 30,  58,  0.55);
+  --card-hover-shadow: rgba(0, 0, 0, 0.92);
 
-  /* ── Spotlight hover border ── */
-  --spotlight-hover-border: rgba(255, 255, 255, 0.18);
+  /* ── Spotlight: crimson shimmer on card hover ── */
+  --spotlight-hover-border: rgba(196, 30, 58, 0.35);
 
-  /* ── Scrollbar ── */
-  --scrollbar-track: #07070b;
-  --scrollbar-thumb: #2a2a3a;
+  /* ── Scrollbar: void black + deep crimson thumb ── */
+  --scrollbar-track: #040308;
+  --scrollbar-thumb: #3D0A14;
 
-  /* ── Dot-grid ── */
-  --dot-color: rgba(255, 255, 255, 0.05);
+  /* ── Dot-grid: vibranium purple pulse ── */
+  --dot-color: rgba(147, 101, 255, 0.08);
 
-  /* ── Proj index ghost text ── */
-  --proj-index-color: rgba(255, 255, 255, 0.06);
+  /* ── Proj index ghost ── */
+  --proj-index-color: rgba(147, 101, 255, 0.10);
 }
 
-/* ── Light theme overrides ──────────────────────────────────
-   Palette is cool-white (slight lavender tint mirrors the dark
-   theme's atmosphere). Cyan and mint are darkened for readable
-   contrast on white backgrounds; iris stays the same hue.
+/* ── Light: Royal Throne Room ───────────────────────────────
+   Warm ivory stone + deep vibranium + royal crimson
    ─────────────────────────────────────────────────────────── */
 [data-theme="light"] {
-  --grad: linear-gradient(120deg, #5b30f0 0%, #0580a0 100%);
+  --grad: linear-gradient(135deg, #6423C8 0%, #9B1830 100%);
 
-  --c-bg:        249 249 255;  /* #F9F9FF — cool white */
-  --c-bg-soft:   241 241 251;  /* #F1F1FB */
-  --c-surface:   255 255 255;  /* #FFFFFF */
-  --c-surface-2: 244 244 253;  /* #F4F4FD */
-  --c-ink:       13  13  23;   /* #0D0D17 — near-black w/ purple hint */
-  --c-muted:     94  94  116;  /* #5E5E74 */
-  --c-faint:     152 152 172;  /* #9898AC */
-  --c-iris:      124 92  255;  /* same — decorative */
-  --c-cyan:      5   128 160;  /* #0580A0 — darkened for contrast */
-  --c-mint:      10  128 96;   /* #0A8060 — darkened for contrast */
+  --c-bg:        252 248 244;  /* #FCF8F4  warm stone/ivory   */
+  --c-bg-soft:   244 239 234;  /* #F4EFEA                     */
+  --c-surface:   255 254 252;  /* #FFFEFC                     */
+  --c-surface-2: 248 243 240;  /* #F8F3F0                     */
+  --c-ink:       14  8   28;   /* #0E081C  deep violet-black  */
+  --c-muted:     100 82  130;  /* #645282                     */
+  --c-faint:     162 148 186;  /* #A294BA                     */
+  --c-iris:      100 35  200;  /* #6423C8  deep vibranium     */
+  --c-cyan:      155 24  48;   /* #9B1830  dark royal crimson */
+  --c-mint:      80  100 120;  /* #506478  slate              */
 
-  --c-line:        rgba(0, 0, 0, 0.08);
-  --c-line-strong: rgba(0, 0, 0, 0.14);
+  --c-line:        rgba(14, 8, 28, 0.10);
+  --c-line-strong: rgba(14, 8, 28, 0.18);
 
-  --card-face:         linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0));
-  --card-border:       rgba(0, 0, 0, 0.08);
-  --card-border-hover: rgba(0, 0, 0, 0.16);
-  --card-hover-shadow: rgba(100, 100, 120, 0.15);
+  --card-face:         linear-gradient(180deg, rgba(155,24,48,0.04), rgba(0,0,0,0));
+  --card-border:       rgba(100, 35, 200, 0.14);
+  --card-border-hover: rgba(155, 24, 48,  0.48);
+  --card-hover-shadow: rgba(14, 8, 28, 0.18);
 
-  --spotlight-hover-border: rgba(0, 0, 0, 0.14);
+  --spotlight-hover-border: rgba(155, 24, 48, 0.32);
 
-  --scrollbar-track: #f1f1fb;
-  --scrollbar-thumb: #c8c8dc;
+  --scrollbar-track: #F4EFEA;
+  --scrollbar-thumb: #C49090;
 
-  --dot-color: rgba(0, 0, 0, 0.045);
-  --proj-index-color: rgba(0, 0, 0, 0.05);
+  --dot-color: rgba(14, 8, 28, 0.05);
+  --proj-index-color: rgba(100, 35, 200, 0.08);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -110,7 +110,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ATMOSPHERE
+   ATMOSPHERE — Vibranium bloom + Royal Crimson edge
    ═══════════════════════════════════════════════════════════ */
 
 .bg-atmosphere {
@@ -129,23 +129,25 @@ body {
   mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 30%, transparent 75%);
 }
 
+/* Vibranium bloom top-right, crimson ember left, deep void bottom */
 .bg-atmosphere::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(600px circle at 80%  0%,  rgba(124, 92, 255, 0.16), transparent 55%),
-    radial-gradient(700px circle at  5% 25%,  rgba(34,  211, 238, 0.10), transparent 50%);
+    radial-gradient(850px circle at 88%  0%,   rgba(147, 101, 255, 0.26), transparent 50%),
+    radial-gradient(500px circle at 0%   38%,  rgba(196, 30,  58,  0.18), transparent 50%),
+    radial-gradient(600px circle at 50%  108%, rgba(80,  30,  180, 0.14), transparent 50%);
 }
 
 [data-theme="light"] .bg-atmosphere::after {
   background:
-    radial-gradient(600px circle at 80%  0%,  rgba(124, 92, 255, 0.07), transparent 55%),
-    radial-gradient(700px circle at  5% 25%,  rgba(  5, 128, 160, 0.06), transparent 50%);
+    radial-gradient(600px circle at 85% 0%,  rgba(100, 35, 200, 0.10), transparent 55%),
+    radial-gradient(450px circle at 0%  35%, rgba(155, 24, 48,  0.09), transparent 50%);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GRAIN OVERLAY
+   GRAIN
    ═══════════════════════════════════════════════════════════ */
 
 .grain {
@@ -153,16 +155,14 @@ body {
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-[data-theme="light"] .grain {
-  opacity: 0.02;
-}
+[data-theme="light"] .grain { opacity: 0.02; }
 
 /* ═══════════════════════════════════════════════════════════
-   GRADIENT UTILITIES
+   GRADIENT UTILITIES — Vibranium → Royal Crimson
    ═══════════════════════════════════════════════════════════ */
 
 .grad-text {
@@ -174,26 +174,21 @@ body {
   animation: shimmer 6s linear infinite;
 }
 
-.grad-bg {
-  background: var(--grad);
-}
+.grad-bg { background: var(--grad); }
 
-@keyframes shimmer {
-  to { background-position: 200% center; }
-}
+@keyframes shimmer { to { background-position: 200% center; } }
 
 /* ═══════════════════════════════════════════════════════════
-   CARD
+   CARD — violet face, crimson border on hover
    ═══════════════════════════════════════════════════════════ */
 
 .card {
   background: var(--card-face);
   border: 1px solid var(--card-border);
   border-radius: 18px;
+  transition: border-color 0.3s ease;
 }
-.card:hover {
-  border-color: var(--card-border-hover);
-}
+.card:hover { border-color: var(--card-border-hover); }
 
 /* ═══════════════════════════════════════════════════════════
    SCROLLBAR
@@ -207,33 +202,26 @@ body {
   border: 2px solid var(--scrollbar-track);
 }
 
+/* Royal crimson text selection */
 ::selection {
-  background: rgba(124, 92, 255, 0.3);
+  background: rgba(196, 30, 58, 0.30);
   color: rgb(var(--c-ink));
 }
 
+[data-theme="light"] ::selection {
+  background: rgba(155, 24, 48, 0.20);
+}
+
 /* ═══════════════════════════════════════════════════════════
-   VIEW TRANSITIONS API
-   Subtle root fade for all navigations; named elements morph
-   automatically because the browser handles position/size.
+   VIEW TRANSITIONS
    ═══════════════════════════════════════════════════════════ */
 
 @keyframes vt-fade-in  { from { opacity: 0; } }
 @keyframes vt-fade-out { to   { opacity: 0; } }
 
-::view-transition-old(root) {
-  animation: 0.22s ease both vt-fade-out;
-}
-::view-transition-new(root) {
-  animation: 0.22s ease both vt-fade-in;
-}
-
-/* Named shared elements (project cards ↔ case-study heroes) get the
-   browser's default cross-fade + position morph — no custom keyframes
-   needed, but we tune the duration to stay snappy. */
-::view-transition-image-pair(root) {
-  isolation: isolate;
-}
+::view-transition-old(root) { animation: 0.22s ease both vt-fade-out; }
+::view-transition-new(root) { animation: 0.22s ease both vt-fade-in;  }
+::view-transition-image-pair(root) { isolation: isolate; }
 
 /* ═══════════════════════════════════════════════════════════
    REDUCED MOTION
@@ -241,22 +229,18 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration:       0.001ms !important;
-    animation-iteration-count:1       !important;
-    transition-duration:      0.001ms !important;
-    scroll-behavior:          auto    !important;
+    animation-duration:        0.001ms !important;
+    animation-iteration-count: 1       !important;
+    transition-duration:       0.001ms !important;
+    scroll-behavior:           auto    !important;
   }
-
-  /* Kill ALL view transitions when reduced motion is preferred */
   ::view-transition-group(*),
   ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
+  ::view-transition-new(*) { animation: none !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SPOTLIGHT HOVER
+   SPOTLIGHT HOVER — crimson shimmer on mouse move
    ═══════════════════════════════════════════════════════════ */
 
 .spotlight {
@@ -272,7 +256,7 @@ body {
   border-radius: inherit;
   background: radial-gradient(
     400px circle at var(--mx, 50%) var(--my, -20%),
-    var(--glow, rgba(124, 92, 255, 0.15)),
+    var(--glow, rgba(196, 30, 58, 0.14)),
     transparent 60%
   );
   opacity: 0;
@@ -283,21 +267,18 @@ body {
   border-color: var(--spotlight-hover-border);
   box-shadow: 0 20px 50px -24px var(--card-hover-shadow);
 }
-.spotlight > * {
-  position: relative;
-  z-index: 1;
-}
+.spotlight > * { position: relative; z-index: 1; }
 
 [data-theme="light"] .spotlight::before {
   background: radial-gradient(
     400px circle at var(--mx, 50%) var(--my, -20%),
-    var(--glow, rgba(124, 92, 255, 0.09)),
+    var(--glow, rgba(155, 24, 48, 0.10)),
     transparent 60%
   );
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GLOW BUTTON
+   GLOW BUTTON — Royal Crimson pulse on hover
    ═══════════════════════════════════════════════════════════ */
 
 .glow-btn {
@@ -306,30 +287,44 @@ body {
 }
 .glow-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 38px -8px rgba(124, 92, 255, 0.5);
+  box-shadow: 0 12px 40px -8px rgba(196, 30, 58, 0.65);
+}
+
+[data-theme="light"] .glow-btn:hover {
+  box-shadow: 0 12px 40px -8px rgba(155, 24, 48, 0.50);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   AURORA BLOB
+   AURORA — Vibranium violet × Royal Crimson eternal spin
    ═══════════════════════════════════════════════════════════ */
 
 .aurora {
   position: absolute;
   border-radius: 9999px;
   filter: blur(70px);
-  opacity: 0.5;
+  opacity: 0.55;
   background: conic-gradient(
     from 0deg,
-    rgba(124, 92, 255, 0.55),
-    rgba(34,  211, 238, 0.45),
-    rgba(52,  211, 153, 0.35),
-    rgba(124, 92,  255, 0.55)
+    rgba(147, 101, 255, 0.60),
+    rgba(196, 30,  58,  0.50),
+    rgba(80,  30,  200, 0.35),
+    rgba(220, 60,  90,  0.45),
+    rgba(147, 101, 255, 0.60)
   );
   animation: spin 18s linear infinite;
   pointer-events: none;
 }
 
-[data-theme="light"] .aurora { opacity: 0.22; }
+[data-theme="light"] .aurora {
+  opacity: 0.16;
+  background: conic-gradient(
+    from 0deg,
+    rgba(100, 35,  200, 0.55),
+    rgba(155, 24,  48,  0.45),
+    rgba(60,  20,  140, 0.30),
+    rgba(100, 35,  200, 0.55)
+  );
+}
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -354,9 +349,9 @@ body {
   animation: cue 1.8s ease-in-out infinite;
 }
 @keyframes cue {
-  0%   { transform: translateY(0);   opacity: 1; }
+  0%   { transform: translateY(0);    opacity: 1; }
   70%  { transform: translateY(12px); opacity: 0; }
-  100% { transform: translateY(0);   opacity: 0; }
+  100% { transform: translateY(0);    opacity: 0; }
 }
 
 /* ═══════════════════════════════════════════════════════════

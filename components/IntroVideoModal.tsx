@@ -78,10 +78,10 @@ export function IntroVideoModal({
             {/* Gradient border frame */}
             <div
               className="rounded-2xl p-[1.5px]"
-              style={{ background: "linear-gradient(135deg,#6366f1,#22d3ee,#34d399)" }}
+              style={{ background: "linear-gradient(135deg,#7B35E8,#9365FF,#C41E3A)" }}
             >
               <div className="overflow-hidden rounded-[14px] bg-black shadow-2xl"
-                style={{ boxShadow: "0 0 80px rgba(99,102,241,0.35), 0 32px 80px rgba(0,0,0,0.8)" }}
+                style={{ boxShadow: "0 0 80px rgba(147,101,255,0.40), 0 0 40px rgba(196,30,58,0.20), 0 32px 80px rgba(0,0,0,0.85)" }}
               >
                 {/* 16:9 responsive wrapper */}
                 <div className="relative aspect-video w-full">

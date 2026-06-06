@@ -62,24 +62,24 @@ function OrbCore({ state }: { state: React.MutableRefObject<OrbState> }) {
         <Sphere ref={meshRef} args={[1.35, 96, 96]}>
           <MeshDistortMaterial
             ref={matRef}
-            color="#7c5cff"
+            color="#9365FF"
             attach="material"
             distort={0.42}
             speed={1.6}
-            roughness={0.18}
-            metalness={0.65}
-            emissive="#22d3ee"
-            emissiveIntensity={0.18}
+            roughness={0.12}
+            metalness={0.80}
+            emissive="#C41E3A"
+            emissiveIntensity={0.22}
           />
         </Sphere>
 
         {/* wireframe shell */}
         <Sphere args={[1.75, 28, 28]}>
           <meshBasicMaterial
-            color="#22d3ee"
+            color="#C41E3A"
             wireframe
             transparent
-            opacity={0.12}
+            opacity={0.10}
           />
         </Sphere>
       </Float>
@@ -178,8 +178,8 @@ export default function HeroOrb() {
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[3, 4, 5]}  intensity={2.2} color="#ffffff" />
-        <pointLight       position={[-4, -2, -3]} intensity={3}   color="#22d3ee" />
-        <pointLight       position={[3, -3,  2]}  intensity={2}   color="#7c5cff" />
+        <pointLight       position={[-4, -2, -3]} intensity={3.2} color="#C41E3A" />
+        <pointLight       position={[3, -3,  2]}  intensity={2.2} color="#9365FF" />
         <OrbCore      state={stateRef} />
         <OrbParticles state={stateRef} />
       </Canvas>
